@@ -21,6 +21,8 @@ import { CrearAdministradorComponent } from '../../auth/crear-administrador/crea
 export class SeccionUsuariosComponent {
   users$!: Observable<any[]>;
 
+  mostrarForm:boolean = false;
+
   constructor(
     private firestoreSvc: FirestoreService,
     private authSvc: AuthService
@@ -36,6 +38,6 @@ export class SeccionUsuariosComponent {
   }
 
   crearAdministrador(){
-    
+    this.mostrarForm = !this.mostrarForm;
   }
 }

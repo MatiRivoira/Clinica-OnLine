@@ -71,6 +71,6 @@
 <div class="container-fluid">
     <button class="btn-accion" (click)="crearAdministrador()">Crear administrador</button>
 </div>
-<div class="form-crear">
+<div *ngIf="mostrarForm" class="form-crear">
     <app-crear-administrador></app-crear-administrador>
 </div>
