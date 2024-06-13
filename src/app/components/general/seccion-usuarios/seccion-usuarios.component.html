@@ -1,0 +1,70 @@
+<div *ngIf="users$ | async as users">
+    <h2>Usuarios Registrados</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Detalles</th>
+                <th>Email</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let usuario of users" class="usuario-row">
+                <tr>
+                    <ng-container [ngSwitch]="usuario.userType">
+                        <!-- Caso Paciente -->
+                        <ng-container *ngSwitchCase="'paciente'">
+                            <td>
+                                <img [src]="usuario.img || 'assets/default-avatar.png'" alt="perfil" class="usuario-avatar">
+                                <img *ngIf="usuario.img2" [src]="usuario.img2" alt="perfil 2" class="usuario-avatar">
+                            </td>
+                            <td  style="text-align: center;">{{ usuario.nombre }}</td>
+                            <td>{{ usuario.apellido }}</td>
+                            <td>{{ usuario.edad }} años, Obra Social: {{ usuario.obraSocial }}, Tipo: {{usuario.userType}}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td>
+                                <button class="btn-accion">Proximamente</button>
+                            </td>
+                        </ng-container>
+                        
+                        <!-- Caso Especialista -->
+                        <ng-container *ngSwitchCase="'especialista'">
+                            <td>
+                                <img [src]="usuario.img || 'assets/default-avatar.png'" alt="perfil" class="usuario-avatar">
+                            </td>
+                            <td>{{ usuario.nombre }}</td>
+                            <td>{{ usuario.apellido }}</td>
+                            @if (usuario.especialidad != "otra") {
+                                <td>{{ usuario.edad }} años, Especialidad: {{ usuario.especialidad }}, Tipo: {{usuario.userType}}</td>
+                            } @else {
+                                <td>{{ usuario.edad }} años, Especialidad: {{ usuario.especialidadPersonalizada }}, Tipo: {{usuario.userType}}</td>
+                            }
+                            <td>{{ usuario.email }}</td>
+                            <td>
+                                <button class="btn-accion" (click)="toggleHabilitacion(usuario, true)">Habilitar</button>
+                                <button class="btn-accion rojo" (click)="toggleHabilitacion(usuario, false)">Inahabilitar</button>
+                            </td>
+                        </ng-container>
+                        
+                        <!-- Caso Admin -->
+                        <ng-container *ngSwitchCase="'admin'">
+                            <td>
+                                <img [src]="usuario.img || 'assets/default-avatar.png'" alt="perfil" class="usuario-avatar">
+                            </td>
+                            <td>{{ usuario.nombre }}</td>
+                            <td>{{ usuario.apellido }}</td>
+                            <td>Tipo: {{usuario.userType}}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td>
+                                <button class="btn-accion">Proximamente</button>
+                            </td>
+                        </ng-container>
+                    </ng-container>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

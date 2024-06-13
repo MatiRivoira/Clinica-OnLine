@@ -193,6 +193,7 @@ export class RegisterComponent {
             clearInterval(interval);
             this.msgRes = "Redirigiendo...";
             if (this.redirigir) {
+              formData.verificadoAdmin = false;
               this.firebaseService.signIn(formData);
               this.register.emit(false);
             }

@@ -71,7 +71,8 @@
     overflow: hidden;
     transition: 0.5s;
     pointer-events: none;
-    background: linear-gradient(to right, #05B79F, #31C0CE);
+    background: linear-gradient(to right, #1ce4c7, #24d0e8);    
+    box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
 }
 
 .login-container form .inputBox input:valid ~ i,
@@ -102,14 +103,15 @@
     border: none;
     outline: none;
     padding: 9px 25px;
-    background: linear-gradient(to right, #05B79F, #31C0CE);
+    background: linear-gradient(to right, #1ce4c7, #24d0e8);
     cursor: pointer;
     font-size: 0.9em;
     border-radius: 15px;
     font-weight: 600;
     width: 100%;
     margin-top: 10px;
-    color: white;
+    color: white;    
+    box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
 }
 
 .login-container form input[type="submit"]:active {
@@ -126,10 +128,11 @@
 .login-container p span {
     font-weight: bold;
     cursor: pointer;
-    background: linear-gradient(to right, #05B79F, #31C0CE);
+    background: linear-gradient(to right, #1ce4c7, #24d0e8);
     -webkit-background-clip: text; /* Propiedad para aplicar el fondo solo al texto */
     background-clip: text;
     color: transparent; /* Hace que el texto sea transparente para mostrar el fondo de degradado */
+    text-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
 }
 
 .login-container p span:hover,
@@ -161,7 +164,8 @@
 }
 
 .input-error {
-    background: rgb(255 0 0 / 54%) !important;
+    background: linear-gradient(to right, #e41c1c, #a51b1b) !important;
+    box-shadow: 0 4px 8px 0 rgba(228, 28, 28, 0.5), 0 6px 20px 0 rgba(232, 36, 36, 0.5) !important;
 }
 
 .err-msg-top {
@@ -183,10 +187,10 @@
 }
 
 .arrowVolver:hover {
-    text-shadow: 0 0 5px #cacaca, /* Small cyan glow */
-                 0 0 10px #cacaca, /* Medium orange glow */
-                 0 0 15px #cacaca; /* Larger orange glow for depth */
-    filter: drop-shadow(0 0 3px #363636) drop-shadow(0 0 26px #363636) drop-shadow(0 0 29px #363636);
+    text-shadow: 0 0 5px #05B79F, /* Small cyan glow */
+                 0 0 10px #05B79F, /* Medium orange glow */
+                 0 0 15px #05B79F; /* Larger orange glow for depth */
+    filter: drop-shadow(0 0 3px #05B79F) drop-shadow(0 0 26px #05B79F) drop-shadow(0 0 29px #05B79F);
 }
 
 .arrowDown {
@@ -201,10 +205,10 @@
 }
 
 .arrowDown:hover {
-    text-shadow: 0 0 5px #cacaca, /* Small cyan glow */
-    0 0 10px #cacaca, /* Medium orange glow */
-        0 0 15px #cacaca; /* Larger orange glow for depth */
-    filter: drop-shadow(0 0 3px #363636) drop-shadow(0 0 26px #363636) drop-shadow(0 0 29px #363636);
+    text-shadow: 0 0 5px #05B79F, /* Small cyan glow */
+    0 0 10px #05B79F, /* Medium orange glow */
+        0 0 15px #05B79F; /* Larger orange glow for depth */
+    filter: drop-shadow(0 0 3px #05B79F) drop-shadow(0 0 26px #05B79F) drop-shadow(0 0 29px #05B79F);
 }
 
 .container {
@@ -234,5 +238,5 @@
     text-shadow: 0 0 5px #cacaca, /* Small cyan glow */
                  0 0 10px #cacaca, /* Medium orange glow */
                  0 0 15px #cacaca; /* Larger orange glow for depth */
-    filter: drop-shadow(0 0 3px #757575) drop-shadow(0 0 26px #a0a0a0) drop-shadow(0 0 29px #8d8d8d);
+    filter: drop-shadow(0 0 3px #05b79f79) drop-shadow(0 0 26px #05b79f79) drop-shadow(0 0 29px #05b79f79);
 }

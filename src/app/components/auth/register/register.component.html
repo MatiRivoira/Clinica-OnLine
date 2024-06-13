@@ -45,7 +45,6 @@
                 <i class="backInput" [ngClass]="{'input-error': errorStates.img}"></i>
             </div>
             @if (this.selectedPaciente) {
-                
                 <div class="inputBox">
                     <input style="left: 150px; top: 3px;" type="file" name="img2" id="img2" accept="image/*" (change)="onImageSelected($event, 'img2')" ngModel required>
                     <span>Imagen de perfil 2</span>

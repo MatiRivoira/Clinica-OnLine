@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit{
   constructor(private router:Router) {}
 
   ngOnInit(): void {
-    this.authService.LogOut(this.redirect)
+    this.authService.logOut(this.redirect)
   }
 
   //?Login with firebase
@@ -55,47 +55,54 @@ export class LoginComponent implements OnInit{
     
     if (formData) {
       this.isLoading = true;
-      this.authService.signIn(formData)
-      .then((resp:any) => {
+      const esEspecialista = await this.verificarEspecialista(formData);
+      if(esEspecialista){
+        this.authService.signIn(formData)
+        .then((resp:any) => {
+          this.isLoading = false;
+          this.router.navigateByUrl("/home");
+        })
+        .catch(err => {
+          console.log(err);
+          this.isLoading = false;
+          switch(err.code){
+            case "auth/invalid-email":
+              this.errMsgEmail = "Ingrese un correo electronico valido."
+              this.errorStates.email = true;
+              break;
+            case "auth/invalid-credential":
+              this.errMsg = "Correo y/o contraseña incorrecta."
+              this.errorStates.email = true;
+              this.errorStates.pass = true;
+              break;
+            case "auth/missing-email":
+              this.errMsgEmail = "Ingrese el correo electronico.";
+              this.errorStates.email = true;
+              this.errMsgPass = "Ingrese la contraseña";
+              this.errorStates.pass = true;
+              break;
+          }
+          if (!err.code) {
+            this.errMsgEmail = "El correo electronico no esta verificado."
+            this.errorStates.email = true;
+          }
+        });
+      } else {
         this.isLoading = false;
-        this.router.navigateByUrl("/home");
-      })
-      .catch(err => {
-        console.log(err);
-        this.isLoading = false;
-        switch(err.code){
-          case "auth/invalid-email":
-            this.errMsgEmail = "Ingrese un correo electronico valido."
-            this.errorStates.email = true;
-            break;
-          case "auth/invalid-credential":
-            this.errMsg = "Correo y/o contraseña incorrecta."
-            this.errorStates.email = true;
-            this.errorStates.pass = true;
-            break;
-          case "auth/missing-email":
-            this.errMsgEmail = "Ingrese el correo electronico.";
-            this.errorStates.email = true;
-            this.errMsgPass = "Ingrese la contraseña";
-            this.errorStates.pass = true;
-            break;
-        }
-        if (!err.code) {
-          this.errMsgEmail = "El correo electronico no esta verificado."
-          this.errorStates.email = true;
-        }
-      });
+        this.errMsgEmail = "El correo necesita ser habilitado por un administrador."
+        this.errorStates.email = true;
+      };
     }
   }
 
   autoFill(user:string) : void {
     switch (user) {
       case "user1":
-        this.ngEmail = 'mgrivoira26@gmail.com';
+        this.ngEmail = 'pekixas233@kernuo.com';
         this.ngPass = '123123';
         break;
       case "user2":
-        this.ngEmail = 'cogopox633@lapeds.com';
+        this.ngEmail = 'mgrivoira26@gmail.com';
         this.ngPass = '123123';
         break;
       case "user3":
@@ -103,6 +110,20 @@ export class LoginComponent implements OnInit{
         this.ngPass = '123123';
         break;
     }
+  }
+
+  verificarEspecialista(user: any): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.firestoreService.getDocumentsWhere("users", "email", user.email).subscribe((data: any) => {
+        var esEspecialista = true;
+        if (data[0].userType === "especialista") {
+          esEspecialista = data[0].verificadoAdmin;
+        }
+        resolve(esEspecialista);
+      }, error => {
+        reject(error);
+      });
+    });
   }
 
   esperarYRedirigir(storage:string, detalle:any, url:string, intervalo:number = 50) {
