@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { inject } from "@angular/core";
@@ -26,6 +26,8 @@ export class CrearAdministradorComponent {
   selectedPaciente:boolean = true;
 
   isLoading:boolean = false;
+  @Output() creo = new EventEmitter();
+
 
   errorStates = {
     email: false,
@@ -84,11 +86,6 @@ export class CrearAdministradorComponent {
       this.errMsgPass2 = "Ingrese nuevamente la contraseña.";
       err = true;
     }
-    if (!formData.userType) {
-      this.errorStates.userType = true;
-      this.errMsg = "Seleccione un tipo de usuario.";
-      err = true;
-    }
 
      // Validar campos comunes
   if (!formData.nombre) {
@@ -111,16 +108,10 @@ export class CrearAdministradorComponent {
     this.errMsg = "Complete todos los campos.";
     err = true;
   }
-
- 
-
-  // Validar campos específicos para especialistas
-  if (formData.userType === 'especialista') {
-    if (!formData.img) {
-      this.errorStates.img = true;
-      this.errMsg = "Seleccione una imagen.";
-      err = true;
-    }
+  if (!formData.img) {
+    this.errorStates.img = true;
+    this.errMsg = "Seleccione una imagen.";
+    err = true;
   }
 
     if (!regex.test(formData.email)) {
@@ -137,27 +128,14 @@ export class CrearAdministradorComponent {
     }
 
     if (!err && !this.submitDisabled) {
+      formData.userType = "admin";
       this.submitDisabled = true;
       this.isLoading = true;
       this.firebaseService.signUp(formData, this.imgFile, undefined)
       .then((resp: any) => {
         this.submitDisabled = false;
         this.isLoading = false;
-        console.log(resp);
-        this.res = true;
-        let counter = 2;
-        const interval = setInterval(() => {
-          this.msgRes = `Redirigiendo en ${counter} segundos...`; // Actualiza el mensaje con el contador
-          counter--;
-          if (counter < 0) {
-            clearInterval(interval);
-            this.msgRes = "Redirigiendo...";
-            if (this.redirigir) {
-              formData.verificadoAdmin = false;
-              this.firebaseService.signIn(formData);
-            }
-          }
-        }, 1000);
+        this.creo.emit(true);
       })
       .catch((err: any) => {
         this.submitDisabled = false;
@@ -183,26 +161,6 @@ export class CrearAdministradorComponent {
   onImageSelected(event: any, imgType: string) {
     if (imgType === 'img') {
       this.imgFile = event.target.files[0];
-    }
-  }
-
-  onUserTypeChange(event: any) {
-    const userType = event.target.value;
-    this.selectedPaciente = userType === 'paciente';
-  }
-
-
-  especialidadSeleccionada!: string;
-  otraEspecialidad: boolean = false;
-  @ViewChild('especialidadPersonalizadaInput') especialidadPersonalizadaInput!: ElementRef;
-
-  onEspecialidadChange(event: any) {
-    this.especialidadSeleccionada = event.target.value;
-    this.otraEspecialidad = this.especialidadSeleccionada === 'otra';
-    if (this.otraEspecialidad) {
-      setTimeout(() => {
-        this.especialidadPersonalizadaInput.nativeElement.focus();
-      }, 0);
     }
   }
 }

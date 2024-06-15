@@ -9,6 +9,7 @@
 
 .login-container form {
     padding: 50px 40px;
+    padding-bottom: 20px;
     border-radius: 15px;
     z-index: 2;
     display: flex;
@@ -212,31 +213,99 @@
 }
 
 .container {
-    width: 100%;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 40px;
-    margin-top: -30px;
+    margin: 0;
+    display: flex;
+    justify-content: end;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.container button {
-    margin: 0px 10px;
-    border: none;
-    outline: none;
-    padding: 9px 25px;
-    background-color: transparent; /* Transparent background to emphasize neon effect */
-    cursor: pointer;
-    font-size: 0.9em;
-    border-radius: 15px;
-    font-weight: 600;
-    transition: box-shadow 0.3s ease-in-out, color 0.3s ease, text-shadow 0.3s ease-in-out; /* Smooth transition for hover effects */
-    color: #3C3E46; /* Initial color, matching the hover state for consistency */
-    text-shadow: none; /* No text shadow initially */
+.container.show {
+    opacity: 1;
+    animation: slideInFromRight 0.5s forwards;
 }
-.container button:hover {
-    text-shadow: 0 0 5px #cacaca, /* Small cyan glow */
-                 0 0 10px #cacaca, /* Medium orange glow */
-                 0 0 15px #cacaca; /* Larger orange glow for depth */
-    filter: drop-shadow(0 0 3px #05b79f79) drop-shadow(0 0 26px #05b79f79) drop-shadow(0 0 29px #05b79f79);
+
+.container.hide {
+    opacity: 0; /* Hace invisible el contenedor cuando se desactiva */
+    animation: slideOutToRight 0.5s forwards;
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(10%);
+    }
+    100% {
+        transform: translateX(0);
+        display: flex;
+    }
+}
+
+@keyframes slideOutToRight {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(10%);
+        display: none;
+    }
+}
+
+.favButtonContainer {
+    margin-top: 10px;
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end; /* Alineación hacia la derecha */
+    align-items: center;
+    justify-content: end;
+}
+
+.favButton {
+    background: linear-gradient(to right, #1ce4c7, #24d0e8);
+    padding: 15px;
+    border-radius: 50%;
+    margin-right: 10px;    
+    box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s; 
+    cursor: pointer;
+}
+
+.favButton:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px 0 rgba(28, 228, 199, 0.5), 0 7px 20px 0 rgba(36, 208, 232, 0.5);
+}
+
+.favButton:active {
+    animation: clickEffect 0.4s;
+}
+
+.favButton i {
+    font-size: 30px;
+    display: inline-block;
+}
+
+@keyframes clickEffect {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.grey {
+    background: #f2f2f2;        
+    box-shadow: 0 4px 8px 0 rgba(65, 65, 65, 0.1), 0 6px 20px 0 rgba(65, 65, 65, 0.1);
+}
+
+.grey:hover {
+    box-shadow: 0 6px 10px 0 rgba(65, 65, 65, 0.1), 0 7px 20px 0 rgba(65, 65, 65, 0.1);
+}
+
+.grey img {
+    width: 30px;
+    border-radius: 10px;
 }

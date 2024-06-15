@@ -220,35 +220,6 @@
     filter: drop-shadow(0 0 3px #05B79F) drop-shadow(0 0 26px #05B79F) drop-shadow(0 0 29px #05B79F);
 }
 
-.container {
-    width: 100%;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 40px;
-    margin-top: -30px;
-}
-
-.container button {
-    margin: 0px 10px;
-    border: none;
-    outline: none;
-    padding: 9px 25px;
-    background-color: transparent; /* Transparent background to emphasize neon effect */
-    cursor: pointer;
-    font-size: 0.9em;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: box-shadow 0.3s ease-in-out, color 0.3s ease, text-shadow 0.3s ease-in-out; /* Smooth transition for hover effects */
-    color: black; /* Initial color, matching the hover state for consistency */
-    text-shadow: none; /* No text shadow initially */
-}
-.container button:hover {
-    text-shadow: 0 0 5px #cacaca, /* Small cyan glow */
-                 0 0 10px #cacaca, /* Medium orange glow */
-                 0 0 15px #cacaca; /* Larger orange glow for depth */
-    filter: drop-shadow(0 0 3px #05b79f79) drop-shadow(0 0 26px #05b79f79) drop-shadow(0 0 29px #05b79f79);
-}
 
 select {    
     position: relative;
@@ -274,3 +245,50 @@ option {
 .login-container form .inputBox select:focus{
     color: white;
 } 
+
+.btnSeleccion {
+    border: none;
+    border-radius: 50%;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 30px;
+    padding: 50px 0px;
+    text-align: center;
+    transition: transform 0.2s ease; /* Transición suave del efecto */
+    cursor: pointer;
+    color: white;    
+    box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
+}
+
+.btnSeleccion:active {
+    transform: scale(0.95);
+}
+
+.btnSeleccion i {
+    font-size: 100px;
+}
+
+.btnPaciente {
+    background: linear-gradient(to right, #1ce4c7, #24d0e8);
+    margin-bottom: 50px;
+}
+
+.container {
+    height: 500px;
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente, opcional */
+
+}
+
+.btnEspecialista {
+    background: linear-gradient(to left, #1ce4c7, #24d0e8);   
+}
+
+.btn-cerrar {
+    z-index: 20;
+    display: flex;
+    width: 100%;
+    align-items: start;
+    cursor: pointer;
+}

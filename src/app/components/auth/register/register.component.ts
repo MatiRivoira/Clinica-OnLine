@@ -24,7 +24,7 @@ export class RegisterComponent {
   res!: boolean;
   msgRes: string = "Redirigiendo en 3 segundos...";
   redirigir: boolean = true;
-  selectedPaciente:boolean = true;
+  selectedPaciente:any = undefined;
 
   isLoading:boolean = false;
 

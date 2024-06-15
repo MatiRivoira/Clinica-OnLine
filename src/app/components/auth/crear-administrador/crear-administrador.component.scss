@@ -273,3 +273,11 @@ option {
 .login-container form .inputBox select:focus{
     color: white;
 } 
+
+.btn-cerrar {
+    z-index: 20;
+    display: flex;
+    width: 100%;
+    align-items: start;
+    cursor: pointer;
+}

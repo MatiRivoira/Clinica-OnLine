@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,6 +10,7 @@ import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { CrearAdministradorComponent } from '../../auth/crear-administrador/crear-administrador.component';
+import { SweetAlertService } from '../../../services/sweetAlert.service';
 
 @Component({
   selector: 'app-seccion-usuarios',
@@ -25,11 +26,13 @@ export class SeccionUsuariosComponent {
 
   constructor(
     private firestoreSvc: FirestoreService,
-    private authSvc: AuthService
+    private authSvc: AuthService,
+    private sweetalert:SweetAlertService
   ) {}
 
   ngOnInit(): void {
     this.users$ = this.firestoreSvc.getDocuments('users');
+    
   }
 
   toggleHabilitacion(user: any, bol: boolean) {
@@ -39,5 +42,15 @@ export class SeccionUsuariosComponent {
 
   crearAdministrador(){
     this.mostrarForm = !this.mostrarForm;
+  }
+
+  seCreoAdmin(event:any){
+    if (event) {
+      this.mostrarForm = !event;
+      this.sweetalert.showSuccessAlert("Se subió con éxito el producto", "Éxito", "success");
+    } else {
+      this.mostrarForm = false;
+      this.sweetalert.showSuccessAlert("Se cancelo o no se pudo crear el usuario", "Error", "error");
+    }
   }
 }

@@ -27,6 +27,8 @@ export class LoginComponent implements OnInit{
   @Input() redirect:boolean = true;
   @Output() register = new EventEmitter<any>();
 
+  userImg:any = []
+
   isLoading:boolean = false;
 
   toggleAccesoRapido():void{
@@ -37,7 +39,22 @@ export class LoginComponent implements OnInit{
     this.showPassword = !this.showPassword;
   }
 
-  constructor(private router:Router) {}
+  constructor(private router:Router) {
+    this.firestoreService.getDocuments("users").subscribe(data => {
+      data.forEach(user => {
+        switch(user.email) {
+          case "pekixas233@kernuo.com": //especialista
+          case "mgrivoira26@gmail.com": //paciente
+          case "a.friadenrich@sistemas-utnfra.com.ar": //paciente
+          case "perit48042@lapeds.com": //paciente
+          case "tirof32894@lapeds.com": //especialista
+          case "weyigot425@morxin.com": //admin
+            this.userImg.push({email: user.email, img: user.img});
+            break;
+        }
+      });
+    })
+  }
 
   ngOnInit(): void {
     this.authService.logOut(this.redirect)
@@ -56,59 +73,76 @@ export class LoginComponent implements OnInit{
     if (formData) {
       this.isLoading = true;
       const esEspecialista = await this.verificarEspecialista(formData);
-      if(esEspecialista){
-        this.authService.signIn(formData)
-        .then((resp:any) => {
+      this.authService.signIn(formData)
+      .then((resp:any) => {
+        if (!esEspecialista) {
           this.isLoading = false;
-          this.router.navigateByUrl("/home");
-        })
-        .catch(err => {
-          console.log(err);
-          this.isLoading = false;
-          switch(err.code){
-            case "auth/invalid-email":
-              this.errMsgEmail = "Ingrese un correo electronico valido."
-              this.errorStates.email = true;
-              break;
-            case "auth/invalid-credential":
-              this.errMsg = "Correo y/o contraseña incorrecta."
-              this.errorStates.email = true;
-              this.errorStates.pass = true;
-              break;
-            case "auth/missing-email":
-              this.errMsgEmail = "Ingrese el correo electronico.";
-              this.errorStates.email = true;
-              this.errMsgPass = "Ingrese la contraseña";
-              this.errorStates.pass = true;
-              break;
-          }
-          if (!err.code) {
-            this.errMsgEmail = "El correo electronico no esta verificado."
-            this.errorStates.email = true;
-          }
-        });
-      } else {
+          this.errMsgEmail = "El correo necesita ser habilitado por un administrador."
+          this.errorStates.email = true;
+          return;
+        }
         this.isLoading = false;
-        this.errMsgEmail = "El correo necesita ser habilitado por un administrador."
-        this.errorStates.email = true;
-      };
+        this.router.navigateByUrl("/home");
+      })
+      .catch(err => {
+        console.log(err);
+        this.isLoading = false;
+        switch(err.code){
+          case "auth/invalid-email":
+            this.errMsgEmail = "Ingrese un correo electronico valido."
+            this.errorStates.email = true;
+            break;
+          case "auth/invalid-credential":
+            this.errMsg = "Correo y/o contraseña incorrecta."
+            this.errorStates.email = true;
+            this.errorStates.pass = true;
+            break;
+          case "auth/missing-email":
+            this.errMsgEmail = "Ingrese el correo electronico.";
+            this.errorStates.email = true;
+            this.errMsgPass = "Ingrese la contraseña";
+            this.errorStates.pass = true;
+            break;
+        }
+        if (!err.code) {
+          this.errMsgEmail = "El correo electronico no esta verificado."
+          this.errorStates.email = true;
+        }
+       
+      });
     }
   }
 
   autoFill(user:string) : void {
-    switch (user) {
-      case "user1":
-        this.ngEmail = 'pekixas233@kernuo.com';
-        this.ngPass = '123123';
-        break;
-      case "user2":
-        this.ngEmail = 'mgrivoira26@gmail.com';
-        this.ngPass = '123123';
-        break;
-      case "user3":
-        this.ngEmail = 'weyigot425@morxin.com';
-        this.ngPass = '123123';
-        break;
+    if (this.accesoRapido){
+      switch (user) {
+        case "user1":
+          this.ngEmail = 'pekixas233@kernuo.com';
+          this.ngPass = '123123';
+          break;
+        case "user2":
+          this.ngEmail = 'mgrivoira26@gmail.com';
+          this.ngPass = '123123';
+          break;
+        case "user3":
+          this.ngEmail = 'a.friadenrich@sistemas-utnfra.com.ar';
+          this.ngPass = '123456';
+          break;
+        case "user4":
+          this.ngEmail = 'perit48042@lapeds.com';
+          this.ngPass = '123123';
+          break; 
+        case "user5":
+          this.ngEmail = 'tirof32894@lapeds.com';
+          this.ngPass = '123123';
+          break;
+        case "user6":
+          this.ngEmail = 'weyigot425@morxin.com';
+          this.ngPass = '123123';
+          break;
+        
+       
+      }
     }
   }
 

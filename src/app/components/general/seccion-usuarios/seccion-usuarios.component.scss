@@ -1,7 +1,18 @@
+.tabla-container {
+    height: 80vh; /* Altura del 80% de la ventana gráfica */
+    overflow-y: auto; /* Barra de desplazamiento vertical si es necesario */
+}
+
 .table {
     width: 100%;
+    height: fit-content;
     border-collapse: collapse;
     margin-top: 20px;
+}
+
+tbody {
+    height: fit-content;
+    border-collapse: collapse;
 }
 
 h2 {

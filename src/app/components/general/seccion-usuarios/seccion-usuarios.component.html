@@ -1,5 +1,5 @@
-<div *ngIf="users$ | async as users">
-    <h2>Usuarios Registrados</h2>
+<h2>Usuarios Registrados</h2>
+<div *ngIf="users$ | async as users" class="tabla-container">
     <table class="table">
         <thead>
             <tr>
@@ -38,14 +38,17 @@
                             <td>{{ usuario.nombre }}</td>
                             <td>{{ usuario.apellido }}</td>
                             @if (usuario.especialidad != "otra") {
-                                <td>{{ usuario.edad }} años, Especialidad: {{ usuario.especialidad }}, Tipo: {{usuario.userType}}</td>
+                                <td>{{ usuario.edad }} años, Especialidad: {{ usuario.especialidad }}, Tipo: {{usuario.userType}}, Verificado por admin: {{usuario.verificadoAdmin}}</td>
                             } @else {
-                                <td>{{ usuario.edad }} años, Especialidad: {{ usuario.especialidadPersonalizada }}, Tipo: {{usuario.userType}}</td>
+                                <td>{{ usuario.edad }} años, Especialidad: {{ usuario.especialidadPersonalizada }}, Tipo: {{usuario.userType}}, Verificado por admin: {{usuario.verificadoAdmin}}</td>
                             }
                             <td>{{ usuario.email }}</td>
                             <td>
-                                <button class="btn-accion" (click)="toggleHabilitacion(usuario, true)">Habilitar</button>
-                                <button class="btn-accion rojo" (click)="toggleHabilitacion(usuario, false)">Inahabilitar</button>
+                                @if (usuario.verificadoAdmin) {
+                                    <button class="btn-accion rojo" (click)="toggleHabilitacion(usuario, false)">Inahabilitar</button>
+                                } @else {
+                                    <button class="btn-accion" (click)="toggleHabilitacion(usuario, true)">Habilitar</button>
+                                }
                             </td>
                         </ng-container>
                         
@@ -68,9 +71,9 @@
         </tbody>
     </table>
 </div>
-<div class="container-fluid">
+<div class="container-fluid" style="margin-bottom: 20px;">
     <button class="btn-accion" (click)="crearAdministrador()">Crear administrador</button>
 </div>
 <div *ngIf="mostrarForm" class="form-crear">
-    <app-crear-administrador></app-crear-administrador>
+    <app-crear-administrador (creo)="seCreoAdmin($event)"></app-crear-administrador>
 </div>
