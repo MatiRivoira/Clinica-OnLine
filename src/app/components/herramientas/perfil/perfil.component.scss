@@ -142,3 +142,14 @@ td {
     font-weight: 700;
     font-size: 13px;
 }
+
+.container-perfil {
+    img {
+        width: 200px;
+        height: 200px;
+        border-radius: 30px;
+        box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.1);
+        cursor: pointer;    
+        margin: 10px;
+    }
+}

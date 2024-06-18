@@ -1,9 +1,26 @@
 <h2>Mi Perfil</h2>
 
 <div *ngIf="usuario" style="padding-left: 30px; padding-right: 30px;">
-  <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
-  <p><strong>Apellido:</strong> {{ usuario.apellido }}</p>
-  <!-- Aquí puedes mostrar más detalles del usuario si es necesario -->
+  <div class="container container-perfil">
+    <div class="row">
+      <div class="col-lg-4">
+        <img [src]="usuario.img" alt="Perfil">
+        @if (usuario.img2) {
+          <img [src]="usuario.img2" alt="Perfil">
+        }
+      </div>
+      <div class="col-lg-8">
+        <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+        <p><strong>Apellido:</strong> {{ usuario.apellido }}</p>
+        <p><strong>DNI:</strong> {{ usuario.dni }}</p>
+        <p><strong>Edad:</strong> {{ usuario.edad }}</p>
+        <p><strong>Email:</strong> {{ usuario.email }}</p>
+        @if (usuario.obraSocial) {
+          <p><strong>Obra social:</strong> {{ usuario.obraSocial }}</p>
+        }
+      </div>
+    </div>
+  </div>
   
   @if (usuario.userType === "especialista") {
     <h3>Mis Horarios</h3>
