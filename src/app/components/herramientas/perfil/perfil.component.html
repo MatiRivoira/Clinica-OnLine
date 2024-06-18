@@ -30,16 +30,25 @@
           </thead>
           <tbody>
             <tr *ngFor="let horario of horarios; let i = index;">
-              <td><input type="text" [(ngModel)]="horario.dia" class="form-control"></td>
-              <td><input type="text" [(ngModel)]="horario.horaInicio" class="form-control"></td>
-              <td><input type="text" [(ngModel)]="horario.horaFin" class="form-control"></td>
+              <td>
+                <select [(ngModel)]="horario.dia" class="form-control">
+                  <option value="">Seleccionar Día</option>
+                  <option *ngFor="let dia of diasPermitidos | keyvalue" [value]="dia.key">{{ dia.key }}</option>
+                </select>
+              </td>
+              <td>
+                <input type="time" [(ngModel)]="horario.horaInicio" class="form-control" [min]="diasPermitidos[horario.dia].inicio" [max]="diasPermitidos[horario.dia].fin">
+              </td>
+              <td>
+                <input type="time" [(ngModel)]="horario.horaFin" class="form-control" [min]="horario.horaInicio" [max]="diasPermitidos[horario.dia].fin">
+              </td>
               <td>
                 <button type="button" class="btn-accion rojo" (click)="eliminarHorario(i)">Eliminar</button>
               </td>
             </tr>
           </tbody>
         </table>
-    
+      
         <button style="margin-bottom: 20px;" type="button" class="btn-accion" (click)="agregarHorario()">Agregar Horario</button>
         <button style="margin-bottom: 20px;" type="button" class="btn-accion verde" (click)="guardarHorarios()">Guardar Horarios</button>
       </div>

@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SweetAlertService } from '../../../services/sweetAlert.service';
 import { DateEspañolPipe } from '../../../pipes/date-español.pipe';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-solicitar-turno',
@@ -29,26 +31,31 @@ export class SolicitarTurnoComponent {
     otraEspecialidad: false,
     especialista: false,
     fecha: false,
+    horario: false,
+    paciente: false
   };
 
   especialistas: any[] = [];
+  pacientes: any[] = [];
 
-  constructor() { }
+  constructor(private firestore: AngularFirestore) { }
 
   ngOnInit(): void {
-    // Lógica para cargar las fechas disponibles dentro de los próximos 15 días
     this.cargarFechasDisponibles();
+    this.cargarPacientes();
+  }
+
+  cargarPacientes(): void {
+    this.firestoreSvc.getDocumentsWhere("users", "userType", "paciente").subscribe((pacientes) => {
+      this.pacientes = pacientes;
+    });
   }
 
   cargarFechasDisponibles(): void {
-    // Aquí deberías implementar la lógica para cargar las fechas disponibles
-    // relacionadas con la disponibilidad del especialista seleccionado
-    // Esta es una implementación de ejemplo que carga las fechas de los próximos 15 días
     const hoy = new Date();
     const limite = new Date();
-    limite.setDate(hoy.getDate() + 15); // Próximos 15 días
+    limite.setDate(hoy.getDate() + 15); 
 
-    // Simulación de fechas disponibles (ejemplo)
     this.fechasDisponibles = this.getFechasEntre(hoy, limite);
   }
 
@@ -64,14 +71,32 @@ export class SolicitarTurnoComponent {
     return fechas;
   }
 
+  errMsg: string = "";
   solicitarTurno(formularioTurno: any): void {
+    this.errMsg = "";
+    this.errorStates = {
+      especialidad: false,
+      otraEspecialidad: false,
+      especialista: false,
+      fecha: false,
+      horario: false,
+      paciente: false
+    };
+    var especialidad = this.especialidadSeleccionada;
+    if (this.especialidadSeleccionada === "otra") {
+      especialidad = this.otraEspecialidadSeleccionada;
+    }
+    var userID = this.user.id;
+    if (this.user.userType === "admin"){
+      userID = formularioTurno.form.value.paciente;
+    }
     if (formularioTurno.valid) {
-      
       this.firestoreSvc.addDocument("turnos", {
-        especialidad: this.especialidadSeleccionada,
-        especialista: this.especialistaSeleccionado,
-        fecha: this.fechaSeleccionada,
-        uid: this.user.id,
+        especialidad: especialidad,
+        especialista: formularioTurno.form.value.especialista,
+        fecha: formularioTurno.form.value.fecha,
+        horario: formularioTurno.form.value.horario,
+        paciente: userID,
         estado: 'Pendiente' 
       }).then(() => {
         this.sweetAlert.showSuccessAlert("Se subió con éxito el producto", "Éxito", "success");
@@ -79,6 +104,27 @@ export class SolicitarTurnoComponent {
         console.error('Error al solicitar el turno:', error);
         this.sweetAlert.showSuccessAlert("Error al solicitar el turno", "Error", "error");
       });
+    } else {
+      if (!formularioTurno.form.value.especialidad) {
+        this.errorStates.especialidad = true;
+        this.errMsg = "Complete todos los campos";
+      }
+      if (!formularioTurno.form.value.especialista) {
+        this.errorStates.especialista = true;
+        this.errMsg = "Complete todos los campos";
+      }
+      if (!formularioTurno.form.value.fecha) {
+        this.errorStates.fecha = true;
+        this.errMsg = "Complete todos los campos";
+      }
+      if (!formularioTurno.form.value.horario) {
+        this.errorStates.horario = true;
+        this.errMsg = "Complete todos los campos";
+      }
+      if (!formularioTurno.form.value.paciente && this.user.userType === "admin") {
+        this.errorStates.paciente = true;
+        this.errMsg = "Complete todos los campos";
+      }
     }
   }
 
@@ -94,7 +140,7 @@ export class SolicitarTurnoComponent {
       }, 0);
     } else {
       this.otraEspecialidadSeleccionada = "";
-      this.firestoreSvc.getDocumentsWhere("users", "especialidad", this.especialidadSeleccionada).subscribe(especialistas => {
+      this.firestoreSvc.getDocumentsWhereArrayElementMatches("users", "especialidad", "nombre", this.especialidadSeleccionada).subscribe(especialistas => {
         this.especialistas = especialistas;
       })
     }
@@ -102,19 +148,25 @@ export class SolicitarTurnoComponent {
 
   onOtraEspecialidadChange(value:string) {
     this.otraEspecialidadSeleccionada = value;
-    this.firestoreSvc.getDocumentsWhere("users", "especialidadPersonalizada", this.otraEspecialidadSeleccionada).subscribe(especialistas => {
+    this.firestoreSvc.getDocumentsWhereArrayElementMatches("users", "especialidad", "nombre", this.otraEspecialidadSeleccionada).subscribe(especialistas => {
       this.especialistas = especialistas;
     })
   }
 
+  especialidad:any;
   onEspecialistaChange($event:any): void {
     this.fechasDisponibles = [];
     this.especialistaSeleccionado = $event.target.value;
+    var auxespecialidad:any = this.especialidadSeleccionada;
+    if (this.especialidadSeleccionada === "otra") {
+      auxespecialidad = this.otraEspecialidadSeleccionada;
+    }
     this.firestoreSvc.getDocument("users", this.especialistaSeleccionado).subscribe(especialista => {
       if (especialista) {
-        if (especialista.horarios) {
+        this.especialidad = especialista.especialidad.find((especialidad: any) => especialidad["nombre"] === auxespecialidad);
+        if (this.especialidad) {
           let dias = new Set<string>();
-          especialista.horarios.forEach((horario: any) => {
+          this.especialidad.horarios.forEach((horario: any) => {
             dias.add(horario.dia);
           });
           this.fechasDisponibles = this.obtenerFechasProximas(Array.from(dias));
@@ -146,4 +198,49 @@ export class SolicitarTurnoComponent {
     return fechasProximas;
   }
   
+
+  horarios:any = [];
+  onTurnoChange(fecha: any) {
+    const diaSeleccionado = (fecha.target.value).split(",")[0];
+    const horario = this.especialidad.horarios.find((horario: any) => horario.dia === diaSeleccionado);
+    
+    if (horario) {
+      this.obtenerTurnosReservados(diaSeleccionado, (fecha.target.value).split(",")[1].trim())
+        .subscribe((reservados:any) => {
+          this.horarios = this.filtrarHorariosDisponibles(horario.horaInicio, horario.horaFin, reservados);
+        });
+    } else {
+      this.horarios = [];
+    }
+  }
+
+  obtenerTurnosReservados(dia: string, fecha: string): Observable<string[]> {
+    return this.firestore.collection('turnos', ref => ref.where('fecha', '==', `${dia}, ${fecha}`))
+      .valueChanges()
+      .pipe(
+        map((turnos: any[]) => turnos.map(turno => turno.horario))
+      );
+  }
+
+  filtrarHorariosDisponibles(horaInicio: string, horaFin: string, horariosReservados: string[]): string[] {
+    const turnos: string[] = [];
+    let [inicioHora, inicioMinuto] = horaInicio.split(':').map(Number);
+    let [finHora, finMinuto] = horaFin.split(':').map(Number);
+
+    let inicioTotalMinutos = inicioHora * 60 + inicioMinuto;
+    const finTotalMinutos = finHora * 60 + finMinuto;
+
+    while (inicioTotalMinutos + 30 <= finTotalMinutos) {
+      const horas = Math.floor(inicioTotalMinutos / 60).toString().padStart(2, '0');
+      const minutos = (inicioTotalMinutos % 60).toString().padStart(2, '0');
+      const turno = `${horas}:${minutos}`;
+      if (!horariosReservados.includes(turno)) {
+        turnos.push(turno);
+      }
+      inicioTotalMinutos += 30;
+    }
+
+    return turnos;
+  }
+
 }

@@ -53,4 +53,43 @@ export class FirestoreService {
     );
   }
 
+  getDocumentsWhereArrayContains(collection: string, field: string, value: any): Observable<any[]> {
+    let collectionRef: AngularFirestoreCollection<any> = this.firestore.collection(collection);
+    
+    if (field && value) {
+      collectionRef = this.firestore.collection(collection, ref => ref.where(field, 'array-contains', value));
+    }
+
+    return collectionRef.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })
+    );
+  }
+
+  getDocumentsWhereArrayElementMatches(collection: string, field: string, subfield: string, value: any): Observable<any[]> {
+    let collectionRef: AngularFirestoreCollection<any> = this.firestore.collection(collection);
+    
+    return collectionRef.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }).filter(doc => {
+          if (Array.isArray(doc[field])) {
+            return doc[field].some((element:any) => element[subfield] === value);
+          }
+          return false;
+        });
+      })
+    );
+  }
+
+
+
 }
