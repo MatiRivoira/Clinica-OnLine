@@ -1,5 +1,7 @@
 <h2 style="margin-top: 30px;">Solicitar Turno</h2>
 
+<app-loading [isLoading]="isLoading"></app-loading>
+
 <div class="login-container">      
     <form style="padding-top: 0;" #formularioTurno="ngForm" (ngSubmit)="solicitarTurno(formularioTurno)">
         <div *ngIf="errMsg" class="err-msg-top"> {{errMsg}} </div>

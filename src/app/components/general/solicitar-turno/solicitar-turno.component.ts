@@ -6,11 +6,12 @@ import { SweetAlertService } from '../../../services/sweetAlert.service';
 import { DateEspañolPipe } from '../../../pipes/date-español.pipe';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, map } from 'rxjs';
+import { LoadingComponent } from '../../loading/loading.component';
 
 @Component({
   selector: 'app-solicitar-turno',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, DateEspañolPipe],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, DateEspañolPipe, LoadingComponent],
   templateUrl: './solicitar-turno.component.html',
   styleUrl: './solicitar-turno.component.scss'
 })
@@ -23,6 +24,8 @@ export class SolicitarTurnoComponent {
 
   firestoreSvc = inject(FirestoreService);
   sweetAlert = inject(SweetAlertService);
+
+  isLoading:boolean = false;
 
   @Input() user:any;
 
@@ -73,6 +76,7 @@ export class SolicitarTurnoComponent {
 
   errMsg: string = "";
   solicitarTurno(formularioTurno: any): void {
+    this.isLoading = true;
     this.errMsg = "";
     this.errorStates = {
       especialidad: false,
@@ -99,9 +103,16 @@ export class SolicitarTurnoComponent {
         paciente: userID,
         estado: 'Pendiente' 
       }).then(() => {
+        this.isLoading = false;
         this.sweetAlert.showSuccessAlert("Se subió con éxito el producto", "Éxito", "success");
+        formularioTurno.reset(); // Esto reinicia el formulario
+        this.especialidadSeleccionada = '';
+        this.otraEspecialidadSeleccionada = '';
+        this.fechaSeleccionada = '';
+        this.horarios = [];
       }).catch((error) => {
         console.error('Error al solicitar el turno:', error);
+        this.isLoading = false;
         this.sweetAlert.showSuccessAlert("Error al solicitar el turno", "Error", "error");
       });
     } else {
@@ -125,6 +136,7 @@ export class SolicitarTurnoComponent {
         this.errorStates.paciente = true;
         this.errMsg = "Complete todos los campos";
       }
+      this.isLoading = false;
     }
   }
 
