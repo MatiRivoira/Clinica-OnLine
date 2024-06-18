@@ -1,0 +1,65 @@
+<h2 style="margin-top: 30px;">Solicitar Turno</h2>
+
+<div class="login-container">
+    <form style="padding-top: 0;" #formularioTurno="ngForm" (ngSubmit)="solicitarTurno(formularioTurno)">
+        <div class="inputBox">
+            <label for="fecha">Especialidad:</label>
+            <select name="especialidad" ngModel required (change)="onEspecialidadChange($event)" [ngClass]="{'input-error': errorStates.especialidad}">
+                <option value="" disabled selected style="color: #838383;">Selecciona la especialidad</option>
+                <option value="Cardiología">Cardiología</option>
+                <option value="Dermatología">Dermatología</option>
+                <option value="Endocrinología">Endocrinología</option>
+                <option value="Gastroenterología">Gastroenterología</option>
+                <option value="Ginecología">Ginecología</option>
+                <option value="Neurología">Neurología</option>
+                <option value="Odontología">Odontología</option>
+                <option value="Oftalmología">Oftalmología</option>
+                <option value="otra">Otra</option>
+            </select> 
+            <i class="backInput" [ngClass]="{'input-error': errorStates.especialidad}"></i>
+        </div>
+    
+        <div class="inputBox" *ngIf="otraEspecialidad">
+            <input type="text" 
+                   name="otraEspecialidad" 
+                   #especialidadPersonalizadaInput 
+                   name="especialidadPersonalizada" 
+                   ngModel 
+                   required 
+                   [ngClass]="{'input-error': errorStates.otraEspecialidad}"
+                   (ngModelChange)="onOtraEspecialidadChange($event)">
+            <span>Ingrese la especialidad</span>
+            <i class="backInput" [ngClass]="{'input-error': errorStates.otraEspecialidad}"></i>
+        </div>
+        
+    
+        <div class="inputBox">
+            <label for="fecha">Especialista:</label>
+            <select name="especialista" ngModel required (change)="onEspecialistaChange($event)" [ngClass]="{'input-error': errorStates.especialista}">
+                <option value="" disabled selected style="color: #838383;">Selecciona el especialista</option>
+                <option *ngFor="let especialista of especialistas" [value]="especialista.id">{{especialista.nombre}} {{especialista.apellido}}</option>
+            </select> 
+            <i class="backInput" [ngClass]="{'input-error': errorStates.especialista}"></i>
+        </div>
+    
+        <div class="inputBox">
+            <label for="fecha">Fecha del Turno:</label>
+            <select name="fecha" ngModel required [ngClass]="{'input-error': errorStates.fecha}">
+                <option value="" disabled selected style="color: #838383;">Selecciona una fecha</option>
+                <option *ngFor="let fecha of fechasDisponibles" [value]="fecha">{{ fecha | fechaEspanol }}</option>
+            </select>
+            <i class="backInput" [ngClass]="{'input-error': errorStates.fecha}"></i>
+        </div>
+
+        <div class="inputBox">
+            <label for="fecha">Horario del Turno:</label>
+            <select name="fecha" ngModel required [ngClass]="{'input-error': errorStates.fecha}">
+                <option value="" disabled selected style="color: #838383;">Selecciona una fecha</option>
+                <option *ngFor="let fecha of fechasDisponibles" [value]="fecha">{{ fecha }}</option>
+            </select>
+            <i class="backInput" [ngClass]="{'input-error': errorStates.fecha}"></i>
+        </div>
+
+        <input style="margin-top: 30px;" type="submit" value="Solicitar turno">
+    </form>    
+</div>

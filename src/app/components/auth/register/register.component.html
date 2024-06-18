@@ -64,26 +64,32 @@
                         <i class="backInput" [ngClass]="{'input-error': errorStates.obraSocial}"></i>
                     </div>
                 } @else {
-                    <div class="inputBox">
-                        <select name="especialidad" ngModel required (change)="onEspecialidadChange($event)" [ngClass]="{'input-error': errorStates.especialidad}">
-                            <option value="" disabled selected style="color: #838383;">Selecciona tu especialidad</option>
-                            <option value="Cardiología">Cardiología</option>
-                            <option value="Dermatología">Dermatología</option>
-                            <option value="Endocrinología">Endocrinología</option>
-                            <option value="Gastroenterología">Gastroenterología</option>
-                            <option value="Ginecología">Ginecología</option>
-                            <option value="Neurología">Neurología</option>
-                            <option value="Odontología">Odontología</option>
-                            <option value="Oftalmología">Oftalmología</option>
-                            <option value="otra">Otra</option>
-                        </select> 
+                    <div class="inputBox" (click)="this.crearEspecialidad = true">
+                        <input type="text" name="especialidades" 
+                               [value]="mostrarEspecialidades()" required [readonly]="crearEspecialidad" 
+                               [ngClass]="{'input-error': errorStates.especialidad}">
+                        @if (!this.especialidades) {
+                            <span>Ingrese su especialidad</span>
+                        } @else {
+                            <span>Toque nuevamente para agregar otra especialidad</span>
+                        }
                         <i class="backInput" [ngClass]="{'input-error': errorStates.especialidad}"></i>
                     </div>
-                    <div class="inputBox" *ngIf="otraEspecialidad">
-                        <input type="text" name="otraEspecialidad" #especialidadPersonalizadaInput name="especialidadPersonalizada" ngModel required [ngClass]="{'input-error': errorStates.otraEspecialidad}">
-                        <span>Ingrese su especialidad</span>
-                        <i class="backInput" [ngClass]="{'input-error': errorStates.otraEspecialidad}"></i>
-                    </div>
+
+                    @if (this.especialidades) {
+                        <button type="button" (click)="this.eliminarEspecialidad = true" class="btn-crear">Eliminar especialidad</button>
+                    }
+                    
+                    @if (eliminarEspecialidad) {
+                        <app-listado-especialidades
+                        [especialidades]="especialidades"
+                        (especialidadesActualizadas)="actualizarEspecialidades($event)"
+                      ></app-listado-especialidades>
+                                          }
+
+                    @if (crearEspecialidad) {
+                        <app-seleccionar-especialidad [especialidades]="especialidades" (especialidadCreada)="onEspecialidadCreada($event)"></app-seleccionar-especialidad>
+                    }
                 }
                 <div class="inputBox">
                     <div *ngIf="errMsgEmail" class="err-msg"> {{errMsgEmail}} </div>

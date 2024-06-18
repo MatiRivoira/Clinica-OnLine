@@ -1,8 +1,54 @@
-<div class="container-fluid" style="height: 100%;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;">
-    <button class="btn-accion" style="height: 300px; width: 500px; border-radius: 50px;     
-    box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
-    ">Proximamente</button>
+<h2>Mi Perfil</h2>
+
+<div *ngIf="usuario" style="padding-left: 30px; padding-right: 30px;">
+  <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+  <p><strong>Apellido:</strong> {{ usuario.apellido }}</p>
+  <!-- Aquí puedes mostrar más detalles del usuario si es necesario -->
+  
+  @if (usuario.userType === "especialista") {
+    <h3>Mis Horarios</h3>
+
+    <div class="inputBox">
+      <label for="fecha">Especialidad:</label>
+      <select name="especialidad" ngModel required (change)="onEspecialidadElegida($event)">
+          <option value="" disabled selected style="color: #838383;">Selecciona la especialidad</option>
+          <option *ngFor="let especialidad of especialidades; index as i" [value]="i">{{ especialidad.nombre }}</option>
+      </select> 
+      <i></i>
+    </div>
+
+    @if (especialidadElegida != -1) {
+      <div class="tabla-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Día</th>
+              <th>Hora Inicio</th>
+              <th>Hora Fin</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let horario of horarios; let i = index;">
+              <td><input type="text" [(ngModel)]="horario.dia" class="form-control"></td>
+              <td><input type="text" [(ngModel)]="horario.horaInicio" class="form-control"></td>
+              <td><input type="text" [(ngModel)]="horario.horaFin" class="form-control"></td>
+              <td>
+                <button type="button" class="btn-accion rojo" (click)="eliminarHorario(i)">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    
+        <button style="margin-bottom: 20px;" type="button" class="btn-accion" (click)="agregarHorario()">Agregar Horario</button>
+        <button style="margin-bottom: 20px;" type="button" class="btn-accion verde" (click)="guardarHorarios()">Guardar Horarios</button>
+      </div>
+    }
+  }
+  
+  
+</div>
+
+<div *ngIf="!usuario">
+  <p>No se encontró información del usuario.</p>
 </div>

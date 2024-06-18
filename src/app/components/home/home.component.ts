@@ -9,6 +9,8 @@ import { DashboardComponent } from '../general/dashboard/dashboard.component';
 import { ConfiguracionComponent } from '../herramientas/configuracion/configuracion.component';
 import { NotificacionesComponent } from '../general/notificaciones/notificaciones.component';
 import { PerfilComponent } from '../herramientas/perfil/perfil.component';
+import { MisTurnosComponent } from '../general/mis-turnos/mis-turnos.component';
+import { SolicitarTurnoComponent } from '../general/solicitar-turno/solicitar-turno.component';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +20,9 @@ import { PerfilComponent } from '../herramientas/perfil/perfil.component';
             DashboardComponent,
             ConfiguracionComponent,
             NotificacionesComponent,
-            PerfilComponent
+            PerfilComponent,
+            MisTurnosComponent,
+            SolicitarTurnoComponent
           ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

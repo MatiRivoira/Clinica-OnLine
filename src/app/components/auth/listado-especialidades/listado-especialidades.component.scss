@@ -1,10 +1,15 @@
 .login-container {
-    position: relative;
-    width: 100%;
-    max-height: auto;  /* Permite que el contenedor crezca */
-    border-radius: 15px;
-    overflow: hidden;
-    transition: height 0.3s ease; /* Opcional: para una transición suave de altura */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: fit-content;
+    z-index: 1000;
+    background-color: white;
+    padding: 20px;
+    border-radius: 25px;
+    box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.3);
 }
 
 .login-container form {
@@ -106,7 +111,8 @@
     color: black;
 }
 
-.login-container form input[type="submit"] {
+.btn-crear {
+    
     border: none;
     outline: none;
     padding: 9px 25px;
@@ -116,14 +122,14 @@
     border-radius: 15px;
     font-weight: 600;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 30px;
     color: white;
     box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
 }
 
 
 
-.login-container form input[type="submit"]:active {
+.btn-crear:active {
     opacity: 0.8;
 }
 
@@ -293,24 +299,48 @@ option {
     cursor: pointer;
 }
 
-.btn-crear {
-    
+.especialidades-lista {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .especialidades-lista li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .especialidades-lista li:last-child {
+    border-bottom: none;
+  }
+  
+  .especialidades-lista li span {
+    flex: 1;
+    font-size: 16px;
+  }
+  
+  .especialidades-lista li button {
+    margin-left: 10px;
     border: none;
-    outline: none;
-    padding: 9px 25px;
-    background: linear-gradient(to right, #1ce4c7, #24d0e8);
-    cursor: pointer;
-    font-size: 0.9em;
-    border-radius: 15px;
-    font-weight: 600;
-    width: 100%;
-    margin-top: 30px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px;
+    text-align: center;
+    background: linear-gradient(to right, #e41c1c, #a51b1b);
     color: white;
-    box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
-}
+    box-shadow: 0 4px 8px 0 rgba(228, 28, 28, 0.5), 0 6px 20px 0 rgba(232, 36, 36, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transición suave del efecto */
 
-
-
-.btn-crear:active {
-    opacity: 0.8;
-}
+    :active {
+        transform: scale(0.95); /* Reducir escala al hacer clic */
+    }
+  }
+  
+  .especialidades-lista li button:hover {
+    background-color: #c82333;
+  }
+  

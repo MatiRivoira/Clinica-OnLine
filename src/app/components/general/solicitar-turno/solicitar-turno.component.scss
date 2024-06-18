@@ -292,25 +292,3 @@ option {
     align-items: start;
     cursor: pointer;
 }
-
-.btn-crear {
-    
-    border: none;
-    outline: none;
-    padding: 9px 25px;
-    background: linear-gradient(to right, #1ce4c7, #24d0e8);
-    cursor: pointer;
-    font-size: 0.9em;
-    border-radius: 15px;
-    font-weight: 600;
-    width: 100%;
-    margin-top: 30px;
-    color: white;
-    box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
-}
-
-
-
-.btn-crear:active {
-    opacity: 0.8;
-}

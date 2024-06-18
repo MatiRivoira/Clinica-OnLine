@@ -7,11 +7,18 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { FirestoreService } from '../../../services/firestore.service';
 import { LoadingComponent } from '../../loading/loading.component';
+import { SeleccionarEspecialidadComponent } from '../seleccionar-especialidad/seleccionar-especialidad.component';
+import { ListadoEspecialidadesComponent } from '../listado-especialidades/listado-especialidades.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, LoadingComponent],
+  imports: [CommonModule, 
+            FormsModule,
+            RouterLink, 
+            LoadingComponent, 
+            SeleccionarEspecialidadComponent,
+            ListadoEspecialidadesComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -25,6 +32,10 @@ export class RegisterComponent {
   msgRes: string = "Redirigiendo en 3 segundos...";
   redirigir: boolean = true;
   selectedPaciente:any = undefined;
+
+  especialidades:any;
+  crearEspecialidad:boolean = false;
+  eliminarEspecialidad:boolean = false;
 
   isLoading:boolean = false;
 
@@ -40,8 +51,7 @@ export class RegisterComponent {
     img: false,
     img2: false,
     obraSocial: false,
-    especialidad: false,
-    otraEspecialidad: false
+    especialidad: false
   };
   
   @Output() register = new EventEmitter<any>();
@@ -69,8 +79,7 @@ export class RegisterComponent {
       img: false,
       img2: false,
       obraSocial: false,
-      especialidad: false,
-      otraEspecialidad: false
+      especialidad: false
     };
     
     this.errMsgEmail = "";
@@ -95,13 +104,14 @@ export class RegisterComponent {
       this.errMsgPass2 = "Ingrese nuevamente la contraseña.";
       err = true;
     }
-    if (!formData.userType) {
-      this.errorStates.userType = true;
-      this.errMsg = "Seleccione un tipo de usuario.";
-      err = true;
+ 
+    if (this.selectedPaciente) {
+      formData.userType = "paciente";
+    } else {
+      formData.userType = "especialista";
     }
 
-     // Validar campos comunes
+  // Validar campos comunes
   if (!formData.nombre) {
     this.errorStates.nombre = true;
     this.errMsg = "Complete todos los campos.";
@@ -144,18 +154,14 @@ export class RegisterComponent {
 
   // Validar campos específicos para especialistas
   if (formData.userType === 'especialista') {
-    if (!formData.especialidad) {
+    if (!this.especialidades) {
       this.errorStates.especialidad = true;
       this.errMsg = "Complete todos los campos.";
       err = true;
+    } else {
+      formData.especialidad = this.especialidades;
     }
-    if (formData.especialidad == "otra") {
-      if (!formData.especialidadPersonalizada) {
-        this.errorStates.otraEspecialidad = true;
-        this.errMsg = "Complete todos los campos.";
-        err = true;
-      }
-    }
+
     if (!formData.img) {
       this.errorStates.img = true;
       this.errMsg = "Seleccione una imagen.";
@@ -236,20 +242,32 @@ export class RegisterComponent {
     this.selectedPaciente = userType === 'paciente';
   }
 
-
-  especialidadSeleccionada!: string;
-  otraEspecialidad: boolean = false;
-  @ViewChild('especialidadPersonalizadaInput') especialidadPersonalizadaInput!: ElementRef;
-
-  onEspecialidadChange(event: any) {
-    this.especialidadSeleccionada = event.target.value;
-    this.otraEspecialidad = this.especialidadSeleccionada === 'otra';
-    if (this.otraEspecialidad) {
-      setTimeout(() => {
-        this.especialidadPersonalizadaInput.nativeElement.focus();
-      }, 0);
+  onEspecialidadCreada($event: any) {
+    this.crearEspecialidad = false;
+    this.especialidades = $event;
+  }
+  
+  mostrarEspecialidades() : string { 
+    let retorno = "";
+    if (this.especialidades) {
+      this.especialidades.forEach((esp:any) => {
+        if (!retorno) {
+          retorno = esp.nombre;
+        } else {
+          retorno += ` - ${esp.nombre} `;
+        }
+      });
     }
+    return retorno;
+  }
+
+  actualizarEspecialidades(nuevasEspecialidades: string[]): void {
+    this.eliminarEspecialidad = false;
+    this.especialidades = nuevasEspecialidades;
+    if (this.especialidades) {
+      if (this.especialidades.length == 0) {
+        this.especialidades = false;
+      }
+    } 
   }
 }
-
-

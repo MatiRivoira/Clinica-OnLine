@@ -1,0 +1,21 @@
+<h2>Mis Turnos</h2>
+
+<div *ngIf="turnos.length === 0">
+  <p>No tienes turnos programados.</p>
+</div>
+
+<div *ngFor="let turno of turnos">
+  <div class="card">
+    <div class="card-header">
+      {{ turno.especialidad }} - {{ turno.especialista }}
+    </div>
+    <div class="card-body">
+      <p>Fecha: {{ turno.fecha | date:'medium' }}</p>
+      <p>Estado: {{ turno.estado }}</p>
+      <button *ngIf="puedeCancelar(turno)" (click)="cancelarTurno(turno)">Cancelar Turno</button>
+      <button *ngIf="turno.comentario" (click)="verResena(turno)">Ver Reseña</button>
+      <button *ngIf="puedeCompletarEncuesta(turno)" (click)="completarEncuesta(turno)">Completar Encuesta</button>
+      <button *ngIf="puedeCalificarAtencion(turno)" (click)="calificarAtencion(turno)">Calificar Atención</button>
+    </div>
+  </div>
+</div>
