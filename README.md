@@ -1,5 +1,5 @@
 <div style="text-align: center; display: flex, aling-items: center;">
-    <img src="/public/favicon.png" alt="Logo de la Clínica Online" style="width: 100%; max-width: 200px; height: auto; display: block; margin: 0 auto;">
+    <img src="/public/favicon.png" alt="Logo de la Clínica Online" style="width: 200px;">
     <h1 style="margin-top: 10px; font-weight: 700;">Clinica OnLine</h1>
 </div>
 
