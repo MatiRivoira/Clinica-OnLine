@@ -101,8 +101,7 @@ export class SolicitarTurnoComponent {
         fecha: formularioTurno.form.value.fecha,
         horario: formularioTurno.form.value.horario,
         paciente: userID,
-        estado: 'Pendiente',
-        comentario: ''
+        estado: 'Pendiente'
       }).then(() => {
         this.isLoading = false;
         this.sweetAlert.showSuccessAlert("Se subió con éxito el producto", "Éxito", "success");

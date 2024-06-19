@@ -3,8 +3,6 @@ import { FirestoreService } from '../../../services/firestore.service';
 import { SweetAlertService } from '../../../services/sweetAlert.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-turnos',
