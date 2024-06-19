@@ -11,4 +11,15 @@ export class SweetAlertService {
   showSuccessAlert(mensaje:string, titulo:string, icono:SweetAlertIcon) {
     Swal.fire(titulo, mensaje, icono);
   }
+
+  showPrompt(title: string, inputPlaceholder: string): Promise<any> {
+    return Swal.fire({
+      title: title,
+      input: 'text',
+      inputPlaceholder: inputPlaceholder,
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    });
+  }
 }

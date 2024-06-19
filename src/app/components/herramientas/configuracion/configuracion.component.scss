@@ -10,4 +10,15 @@
     background: linear-gradient(to right, #1ce4c7, #24d0e8);
     color: white;
     transition: transform 0.2s ease; /* Transición suave del efecto */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    i {
+        font-size: 60px;
+    }
+}
+.btn-accion:active {
+    transform: scale(0.95); /* Reducir escala al hacer clic */
 }

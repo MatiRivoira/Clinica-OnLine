@@ -1,0 +1,124 @@
+.tabla-container {
+    overflow-y: auto; /* Barra de desplazamiento vertical si es necesario */
+    
+}
+
+.table {
+    width: 100%;
+    height: fit-content;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+tbody {
+    height: fit-content;
+    border-collapse: collapse;
+}
+
+h2 {
+    color: #272e41;
+    margin-top: 30px;
+    letter-spacing: 1px;
+}
+
+td {
+    display: flex-wrap;
+    align-content: center;
+}
+
+.table th, .table td {
+    border: none;
+    background: none;
+    padding: 10px;
+    text-align: center;
+}
+
+.table th {
+    font-weight: 700;
+    color: #aaabb3;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.table td {
+    color: #272e41;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.btn-accion {
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 10px;
+    text-align: center;
+    background: linear-gradient(to right, #1ce4c7, #24d0e8);
+    color: white;
+    transition: transform 0.2s ease; /* Transición suave del efecto */
+    box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
+}
+
+.btn-accion:active {
+    transform: scale(0.95); /* Reducir escala al hacer clic */
+}
+
+.rojo {
+    background: linear-gradient(to right, #e41c1c, #a51b1b);
+    box-shadow: 0 4px 8px 0 rgba(228, 28, 28, 0.5), 0 6px 20px 0 rgba(232, 36, 36, 0.5);
+}
+
+/* Estilos para los filtros */
+.filtros {
+    margin-bottom: 20px;
+}
+
+.filtros input {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.comentario-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+    width: 30%;
+  }
+  
+  .card {
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 30px;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #1ce4c7, #24d0e8);
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 30px 30px 0px 0px;
+  }
+  
+  .card-title {
+    margin-bottom: 0;
+    font-size: 1.25rem;
+  }
+  
+  .card-body {
+    padding: 1.25rem;
+  }
+
+  .btn-cerrar {
+    cursor: pointer;
+}

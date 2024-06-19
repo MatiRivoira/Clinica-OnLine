@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.authService.logOut(this.redirect)
+    this.authService.logOut(this.redirect);
   }
 
   //?Login with firebase

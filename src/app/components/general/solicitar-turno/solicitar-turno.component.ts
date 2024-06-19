@@ -101,7 +101,8 @@ export class SolicitarTurnoComponent {
         fecha: formularioTurno.form.value.fecha,
         horario: formularioTurno.form.value.horario,
         paciente: userID,
-        estado: 'Pendiente' 
+        estado: 'Pendiente',
+        comentario: ''
       }).then(() => {
         this.isLoading = false;
         this.sweetAlert.showSuccessAlert("Se subió con éxito el producto", "Éxito", "success");
@@ -164,6 +165,8 @@ export class SolicitarTurnoComponent {
       this.especialistas = especialistas;
     })
   }
+  
+ 
 
   especialidad:any;
   onEspecialistaChange($event:any): void {
@@ -227,11 +230,13 @@ export class SolicitarTurnoComponent {
   }
 
   obtenerTurnosReservados(dia: string, fecha: string): Observable<string[]> {
-    return this.firestore.collection('turnos', ref => ref.where('fecha', '==', `${dia}, ${fecha}`))
-      .valueChanges()
-      .pipe(
-        map((turnos: any[]) => turnos.map(turno => turno.horario))
-      );
+    return this.firestore.collection('turnos', ref =>
+      ref.where('fecha', '==', `${dia}, ${fecha}`)
+         .where('estado', '!=', 'Cancelado')
+    ).valueChanges()
+     .pipe(
+       map((turnos: any[]) => turnos.map(turno => turno.horario))
+     );
   }
 
   filtrarHorariosDisponibles(horaInicio: string, horaFin: string, horariosReservados: string[]): string[] {

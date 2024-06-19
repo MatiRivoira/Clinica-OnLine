@@ -11,6 +11,7 @@ import { NotificacionesComponent } from '../general/notificaciones/notificacione
 import { PerfilComponent } from '../herramientas/perfil/perfil.component';
 import { MisTurnosComponent } from '../general/mis-turnos/mis-turnos.component';
 import { SolicitarTurnoComponent } from '../general/solicitar-turno/solicitar-turno.component';
+import { TurnosComponent } from '../general/turnos/turnos.component';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,8 @@ import { SolicitarTurnoComponent } from '../general/solicitar-turno/solicitar-tu
             NotificacionesComponent,
             PerfilComponent,
             MisTurnosComponent,
-            SolicitarTurnoComponent
+            SolicitarTurnoComponent,
+            TurnosComponent
           ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
