@@ -1,6 +1,8 @@
-<img src="/public/favicon.png" alt="Logo de la Clínica Online" width="200" height="200">
-<h5 style="    margin-top: 10px;
-    font-weight: 700;">Clinica OnLine</h5>
+<div style="text-align: center;">
+    <img src="/public/favicon.png" alt="Logo de la Clínica Online" style="width: 100%; max-width: 400px; height: auto; display: block; margin: 0 auto;">
+    <h1 style="margin-top: 10px; font-weight: 700;">Clinica OnLine</h1>
+</div>
+
 
 La Clínica Online es una plataforma integral diseñada para la gestión eficiente de turnos médicos, atención especializada y administración de pacientes. Esta aplicación facilita tanto a pacientes como a especialistas la organización de consultas y tratamientos de salud de manera eficaz y accesible.
 
