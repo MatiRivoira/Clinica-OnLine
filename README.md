@@ -1,4 +1,4 @@
-# Clínica Online
+![Clínica Online](/public/favicon.png)
 
 La Clínica Online es una plataforma integral diseñada para la gestión eficiente de turnos médicos, atención especializada y administración de pacientes. Esta aplicación facilita tanto a pacientes como a especialistas la organización de consultas y tratamientos de salud de manera eficaz y accesible.
 
