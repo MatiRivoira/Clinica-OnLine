@@ -1,4 +1,10 @@
-<div style="text-align: center; display: flex, aling-items: center;">
+<div style="
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+">
     <img src="/public/favicon.png" alt="Logo de la Clínica Online" style="width: 200px;">
     <h1 style="margin-top: 10px; font-weight: 700;">Clinica OnLine</h1>
 </div>
