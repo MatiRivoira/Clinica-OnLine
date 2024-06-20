@@ -21,10 +21,10 @@ export class PerfilComponent implements OnInit {
   diasPermitidos: { [key: string]: { inicio: string, fin: string } } = {
     'Lunes': { inicio: '08:00', fin: '19:00' },
     'Martes': { inicio: '08:00', fin: '19:00' },
-    'Miercoles': { inicio: '08:00', fin: '19:00' },
+    'Miércoles': { inicio: '08:00', fin: '19:00' },
     'Jueves': { inicio: '08:00', fin: '19:00' },
     'Viernes': { inicio: '08:00', fin: '19:00' },
-    'Sabado': { inicio: '08:00', fin: '14:00' }
+    'Sábado': { inicio: '08:00', fin: '14:00' }
   };
 
   bdSvc = inject(FirestoreService);
@@ -61,7 +61,7 @@ export class PerfilComponent implements OnInit {
     for (let horario of this.horarios) {
       let dia = horario.dia;
       if (!this.diasPermitidos[dia]) {
-        alert(`El día ${horario.dia} no es válido. Solo se permiten de lunes a sábado.`);
+        this.sweetAlert.showSuccessAlert(`El día ${horario.dia} no es válido. Solo se permiten de lunes a sábado.`, "Error", "error");
         return false;
       }
 
@@ -69,17 +69,18 @@ export class PerfilComponent implements OnInit {
       let fin = this.convertirHora(horario.horaFin);
 
       if (inicio >= fin) {
-        alert('La hora de inicio debe ser menor que la hora de fin.');
+        this.sweetAlert.showSuccessAlert('La hora de inicio debe ser menor que la hora de fin.', "Error", "error");
         return false;
       }
 
       if (!this.estaDentroDelHorarioPermitido(dia, inicio, fin)) {
-        alert(`El horario para ${horario.dia} debe estar entre ${this.diasPermitidos[dia].inicio} y ${this.diasPermitidos[dia].fin}.`);
+        this.sweetAlert.showSuccessAlert(`El horario para ${horario.dia} debe estar entre ${this.diasPermitidos[dia].inicio} y ${this.diasPermitidos[dia].fin}.`, "Error", "error");
+      
         return false;
       }
 
       if ((fin - inicio) < 30) {
-        alert('La duración mínima de un turno es de 30 minutos.');
+        this.sweetAlert.showSuccessAlert('La duración mínima de un turno es de 30 minutos.', "Error", "error");
         return false;
       }
     }

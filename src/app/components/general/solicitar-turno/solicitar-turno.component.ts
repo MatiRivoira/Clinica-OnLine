@@ -192,7 +192,7 @@ export class SolicitarTurnoComponent {
   }
 
   obtenerFechasProximas(diasSemana: string[]): Date[] {
-    const diasDeLaSemana = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
+    const diasDeLaSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const hoy = new Date();
     const limite = new Date();
     limite.setDate(hoy.getDate() + 15); // Próximos 15 días
@@ -217,11 +217,11 @@ export class SolicitarTurnoComponent {
   onTurnoChange(fecha: any) {
     const diaSeleccionado = (fecha.target.value).split(",")[0];
     const horario = this.especialidad.horarios.find((horario: any) => horario.dia === diaSeleccionado);
-    
     if (horario) {
       this.obtenerTurnosReservados(diaSeleccionado, (fecha.target.value).split(",")[1].trim())
         .subscribe((reservados:any) => {
           this.horarios = this.filtrarHorariosDisponibles(horario.horaInicio, horario.horaFin, reservados);
+          
         });
     } else {
       this.horarios = [];
