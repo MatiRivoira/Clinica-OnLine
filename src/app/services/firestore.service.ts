@@ -16,6 +16,12 @@ export class FirestoreService {
     return this.firestore.collection(collection).doc(docId).set({ id: docId, ...data });
   }
 
+  addDocumentReturnID(collection: string, data: any, id?: string): Promise<string> {
+    const docId = id || this.firestore.createId();
+    return this.firestore.collection(collection).doc(docId).set({ id: docId, ...data })
+        .then(() => docId);  // Retorna el docId después de agregar el documento
+}
+
   // Read a document by ID
   getDocument(collection: string, id: string): Observable<any> {
     return this.firestore.collection(collection).doc(id).valueChanges();

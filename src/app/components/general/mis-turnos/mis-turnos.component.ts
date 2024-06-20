@@ -3,11 +3,13 @@ import { Component, Input, inject, input } from '@angular/core';
 import { FirestoreService } from '../../../services/firestore.service';
 import { FormsModule } from '@angular/forms';
 import { SweetAlertService } from '../../../services/sweetAlert.service';
+import { EncuestaAtencionComponent } from '../../encuesta-atencion/encuesta-atencion.component';
+import { VerEncuestaComponent } from '../../ver-encuesta/ver-encuesta.component';
 
 @Component({
   selector: 'app-mis-turnos',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, EncuestaAtencionComponent, VerEncuestaComponent],
   templateUrl: './mis-turnos.component.html',
   styleUrl: './mis-turnos.component.scss'
 })
@@ -17,6 +19,11 @@ export class MisTurnosComponent {
   filtroEspecialidad: string = '';
   filtroEspecialista: string = '';
   isAdmin: boolean = false;
+
+  encuestaAtecion: boolean = false;
+  turnoSeleccionado:boolean = false; // boolean 
+
+  encuestaSeleccionada :string = '';
 
   title:string = "Comentarios";
 
@@ -70,7 +77,7 @@ export class MisTurnosComponent {
           this.firestoreSvc.updateDocument('turnos', turno.id, { comentario: result.value })
             .then(() => {
               this.sweetAlert.showSuccessAlert(`El turno ha sido calificado.`, "Calificado", 'success');
-              this.cargarTurnos(); // Actualiza la lista de turnos después de cancelar
+              this.cargarTurnos();  
             })
             .catch(error => {
               this.sweetAlert.showSuccessAlert(`No se pudo calificar el turno.`, 'Error', 'error');
@@ -90,14 +97,14 @@ export class MisTurnosComponent {
       .then(result => {
         if (result.isConfirmed && result.value) {
           this.firestoreSvc.updateDocument('turnos', turno.id, { estado: estado, comentario: result.value })
-            .then(() => {
-              this.sweetAlert.showSuccessAlert(`El turno ha sido ${estado}.`, estado, 'success');
-              this.cargarTurnos(); // Actualiza la lista de turnos después de cancelar
-            })
-            .catch(error => {
-              this.sweetAlert.showSuccessAlert(`No se pudo ${estado} el turno.`, 'Error', 'error');
-              console.error(`Error al ${estado} el turno:`, error);
-            });
+          .then(() => {
+            this.sweetAlert.showSuccessAlert(`El turno ha sido ${estado}.`, estado, 'success');
+            this.cargarTurnos(); // Actualiza la lista de turnos después de cancelar
+          })
+          .catch(error => {
+            this.sweetAlert.showSuccessAlert(`No se pudo ${estado} el turno.`, 'Error', 'error');
+            console.error(`Error al ${estado} el turno:`, error);
+          });
         }
       });
   }
@@ -168,5 +175,9 @@ export class MisTurnosComponent {
       this.comentarioSeleccionado += `<strong>Reseña:</strong> ${turno.resenia} <br> <strong>Diagnostico:</strong> ${turno.diagnostico}`;
     }
     this.mostrarComentario = true;
+  }
+
+  verEncuesta(encuestaId:string) : void {
+    this.encuestaSeleccionada = encuestaId;
   }
 }

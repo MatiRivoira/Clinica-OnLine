@@ -1,0 +1,32 @@
+<div class="encuesta-modal">
+  <div class="encuesta-container">
+      <div class="btn-cerrar" (click)="this.cerrarEncuesta.emit(false);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+          </svg>
+      </div>
+      <div *ngIf="encuesta$ | async as encuesta">
+        <h2>Detalles de la Encuesta</h2>
+        <div>
+          <label>Calificación general del servicio:</label>
+          <div class="estrellas">
+            <i class="bx bxs-star estrella" *ngFor="let _ of [1, 2, 3, 4, 5]; let i = index" [class.marca]="i < encuesta.calificacion"></i>
+          </div>
+        </div>
+        <div>
+          <label>Opinión sobre la atención recibida:</label>
+          <p>{{ encuesta.opinionAtencion }}</p>
+        </div>
+        <div>
+          <label>Tiempo de espera:</label>
+          <p>{{ encuesta.tiempoEspera }} minutos</p>
+        </div>
+        <div>
+          <label>Sugerencias de mejora:</label>
+          <p>{{ encuesta.sugerencias }}</p>
+        </div>
+      </div>
+  </div>
+</div>
+
+  
