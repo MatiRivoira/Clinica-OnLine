@@ -66,8 +66,7 @@
                 } @else {
                     <div class="inputBox" (click)="this.crearEspecialidad = true">
                         <input type="text" name="especialidades" 
-                               [value]="mostrarEspecialidades()" required [readonly]="crearEspecialidad" 
-                               [ngClass]="{'input-error': errorStates.especialidad}">
+                               [value]="mostrarEspecialidades()" required [readonly]="crearEspecialidad">
                         @if (!this.especialidades) {
                             <span>Ingrese su especialidad</span>
                         } @else {
@@ -111,7 +110,7 @@
                     </svg>
                     <i class="backInput" [ngClass]="{'input-error': errorStates.pass}"></i>
                 </div>
-                <div class="inputBox">
+                <div class="inputBox" style="margin-bottom: 35px;">
                     <div *ngIf="errMsgPass2" class="err-msg"> {{errMsgPass2}} </div>
                     <input [type]="showPassword ? 'text' : 'password'" name="confirmPassword" ngModel required>
                     <span>Repite la Contraseña</span>
@@ -125,6 +124,7 @@
                     </svg>
                     <i class="backInput" [ngClass]="{'input-error': errorStates.pass2}"></i>
                 </div>
+                <app-captcha (verificacion)="this.captcha = $event"></app-captcha>
                 <input style="margin-top: 30px;" type="submit" value="Crear cuenta">
             </div>
             <p>Ya tienes una cuenta? <span (click)="this.register.emit(false);">Inicia sesión</span></p>

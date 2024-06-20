@@ -1,5 +1,4 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { inject } from "@angular/core";
@@ -9,6 +8,8 @@ import { FirestoreService } from '../../../services/firestore.service';
 import { LoadingComponent } from '../../loading/loading.component';
 import { SeleccionarEspecialidadComponent } from '../seleccionar-especialidad/seleccionar-especialidad.component';
 import { ListadoEspecialidadesComponent } from '../listado-especialidades/listado-especialidades.component';
+import { CaptchaComponent } from '../captcha/captcha.component';
+import { SweetAlertService } from '../../../services/sweetAlert.service';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +19,8 @@ import { ListadoEspecialidadesComponent } from '../listado-especialidades/listad
             RouterLink, 
             LoadingComponent, 
             SeleccionarEspecialidadComponent,
-            ListadoEspecialidadesComponent],
+            ListadoEspecialidadesComponent,
+            CaptchaComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
@@ -38,6 +40,8 @@ export class RegisterComponent {
   eliminarEspecialidad:boolean = false;
 
   isLoading:boolean = false;
+
+  captcha:boolean = false;
 
   errorStates = {
     email: false,
@@ -60,7 +64,7 @@ export class RegisterComponent {
     this.showPassword = !this.showPassword;
   }
 
-  constructor(private router: Router) {}
+  constructor(private sweetAlert:SweetAlertService) {}
 
   //? Register with firebase
   firebaseService = inject(AuthService);
@@ -179,6 +183,12 @@ export class RegisterComponent {
       this.errorStates.pass = true;
       this.errorStates.pass2 = true;
       this.errMsg = "Las contraseñas no coinciden.";
+      return;
+    }
+
+    if (!this.captcha) {
+      this.sweetAlert.showSuccessAlert("Complete el captcha", "Complete el captcha", "error");
+      err = true;
       return;
     }
 
