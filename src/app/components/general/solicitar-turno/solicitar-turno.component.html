@@ -2,76 +2,97 @@
 
 <app-loading [isLoading]="isLoading"></app-loading>
 
+<div class="container-fluid containerOtraEspecialidad" *ngIf="otraEspecialidad">
+    <h5>Ingrese la especialidad</h5>
+    <input class="form-control" type="text" name="otraEspecialidad" #especialidadPersonalizadaInput ngModel required [(ngModel)]="inputOtra">
+    <div class="container" style="height: fit-content;">
+        <button class="btn-accion rojo" (click)="this.otraEspecialidad = false; this.especialidadSeleccionada = ''">Cancelar</button>
+        <button class="btn-accion" (click)="onOtraEspecialidadChange()">Aceptar</button>
+    </div>
+</div>
+
+
 <div class="login-container">      
-    <form style="padding-top: 0;" #formularioTurno="ngForm" (ngSubmit)="solicitarTurno(formularioTurno)">
-        <div *ngIf="errMsg" class="err-msg-top"> {{errMsg}} </div>
-        @if (this.user.userType === "admin") {
-            <div class="inputBox">
-                <label for="paciente">Paciente:</label>
-                <select name="paciente" ngModel required>
-                    <option value="" disabled selected style="color: #838383;">Selecciona el paciente</option>
-                    <option *ngFor="let paciente of pacientes" [value]="paciente.id">{{paciente.nombre}} {{paciente.apellido}}</option>
-                </select> 
-                <i class="backInput" [ngClass]="{'input-error': errorStates.paciente}"></i>
+    <div *ngIf="errMsg" class="err-msg-top"> {{errMsg}} </div>
+    @if (this.user.userType === "admin") {
+        <div class="inputBox">
+            <label for="paciente">Paciente:</label>
+            <select name="paciente" ngModel required>
+                <option value="" disabled selected style="color: #838383;">Selecciona el paciente</option>
+                <option *ngFor="let paciente of pacientes" [value]="paciente.id">{{paciente.nombre}} {{paciente.apellido}}</option>
+            </select> 
+            <i class="backInput" [ngClass]="{'input-error': errorStates.paciente}"></i>
+        </div>
+    }
+
+    <div class="especialidades-container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12" style="display: flex; margin-bottom: 20px; font-size: 40px; ">
+                    <i class='bx bx-chevron-left' style="cursor: pointer; z-index: 100;" (click)="atrasPaso()"></i>
+                </div>
+                <div class="col-lg-12" style="position: absolute;">
+                    <h3 style="text-align: center;">{{paso}}:</h3>
+                </div>
             </div>
+        </div>
+        @switch (paso) {
+            @case ("Selecciona una especialidad") {
+                <div class="especialidades-grid">
+                    <div *ngFor="let especialidad of especialidades" class="especialidad-btn" (click)="onEspecialidadChange(especialidad.nombre)">
+                        @if (especialidad.imagen) {
+                            @if (especialidad.imagen === "otra") {
+                                <i class='bx bx-question-mark'></i>
+                            } @else {
+                                <img [src]="especialidad.imagen" alt="{{especialidad.nombre}}">
+                            }
+                        } @else {
+                            <i class='bx bx-image-alt'></i>
+                        }
+                        <div>{{especialidad.nombre}}</div>
+                    </div>
+                </div>
+            }
+            @case ("Seleccione un especialista") {
+                <div class="especialidades-grid">
+                    <div *ngFor="let especialidad of especialistas" class="especialidad-btn" (click)="onEspecialistaChange(especialidad.id); this.especialistaAux=especialidad.nombre+ ' ' + especialidad.apellido">
+                        <div>{{especialidad.nombre}} {{especialidad.apellido}}</div>
+                        @if (especialidad.img) {
+                            <img [src]="especialidad.img" alt="{{especialidad.nombre}} {{especialidad.apellido}}">
+                        } @else {
+                            <i class='bx bx-image-alt'></i>
+                        }
+                    </div>
+                </div>
+            }
+            @case ("Seleccione una fecha") {
+                <div class="especialidades-grid">
+                    <div *ngFor="let fecha of fechasDisponibles" class="especialidad-btn" (click)="onTurnoChange(fecha)">
+                        {{fecha | fechaEspanol}}
+                    </div>
+                </div>
+            }
+
+            @case ("Seleccione un horario") {
+                <div class="especialidades-grid">
+                    <div *ngFor="let fecha of horarios" class="especialidad-btn" (click)="onHorarioSelected(fecha)">
+                        {{fecha}}
+                    </div>
+                </div>
+            }
+
+            @case ("Confirme su turno") {
+                @if (this.especialidadSeleccionada === "Otra") {
+                    <p>{{this.otraEspecialidadSeleccionada}}</p>
+                } @else {
+                    <p>{{this.especialidadSeleccionada}}</p>
+                }
+                <p>{{this.especialistaAux}}</p>
+                <p>{{this.fechaSeleccionada}}</p>
+                <p>{{this.horarioSeleccionado}}</p>
+                <button class="btn-accion" (click)="solicitarTurno()">Confirme el turno</button>
+            }
         }
-        <div class="inputBox">
-            <label for="fecha">Especialidad:</label>
-            <select name="especialidad" ngModel required (change)="onEspecialidadChange($event)">
-                <option value="" disabled selected style="color: #838383;">Selecciona la especialidad</option>
-                <option value="Cardiología">Cardiología</option>
-                <option value="Dermatología">Dermatología</option>
-                <option value="Endocrinología">Endocrinología</option>
-                <option value="Gastroenterología">Gastroenterología</option>
-                <option value="Ginecología">Ginecología</option>
-                <option value="Neurología">Neurología</option>
-                <option value="Odontología">Odontología</option>
-                <option value="Oftalmología">Oftalmología</option>
-                <option value="otra">Otra</option>
-            </select> 
-            <i class="backInput" [ngClass]="{'input-error': errorStates.especialidad}"></i>
-        </div>
-    
-        <div class="inputBox" *ngIf="otraEspecialidad">
-            <input type="text" 
-                   name="otraEspecialidad" 
-                   #especialidadPersonalizadaInput 
-                   name="especialidadPersonalizada" 
-                   ngModel 
-                   required 
-                   (ngModelChange)="onOtraEspecialidadChange($event)">
-            <span>Ingrese la especialidad</span>
-            <i class="backInput" [ngClass]="{'input-error': errorStates.otraEspecialidad}"></i>
-        </div>
         
-    
-        <div class="inputBox">
-            <label for="fecha">Especialista:</label>
-            <select name="especialista" ngModel required (change)="onEspecialistaChange($event)">
-                <option value="" disabled selected style="color: #838383;">Selecciona el especialista</option>
-                <option *ngFor="let especialista of especialistas" [value]="especialista.id">{{especialista.nombre}} {{especialista.apellido}}</option>
-            </select> 
-            <i class="backInput" [ngClass]="{'input-error': errorStates.especialista}"></i>
-        </div>
-    
-        <div class="inputBox">
-            <label for="fecha">Fecha del Turno:</label>
-            <select name="fecha" ngModel required (change)="onTurnoChange($event)">
-                <option value="" disabled selected style="color: #838383;">Selecciona una fecha</option>
-                <option *ngFor="let fecha of fechasDisponibles" [value]="fecha | fechaEspanol">{{ fecha | fechaEspanol }}</option>
-            </select>
-            <i class="backInput" [ngClass]="{'input-error': errorStates.fecha}"></i>
-        </div>
-
-        <div class="inputBox">
-            <label for="horario">Horario del Turno:</label>
-            <select name="horario" ngModel required >
-                <option value="" disabled selected style="color: #838383;">Selecciona una horario</option>
-                <option *ngFor="let horario of horarios" [value]="horario">{{ horario }}</option>
-            </select>
-            <i class="backInput" [ngClass]="{'input-error': errorStates.horario}"></i>
-        </div>
-
-        <input style="margin-top: 30px;" type="submit" value="Solicitar turno">
-    </form>    
+    </div>
 </div>

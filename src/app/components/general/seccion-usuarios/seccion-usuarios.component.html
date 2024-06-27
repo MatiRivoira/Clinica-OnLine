@@ -23,10 +23,10 @@
                             </td>
                             <td  style="text-align: center;">{{ usuario.nombre }}</td>
                             <td>{{ usuario.apellido }}</td>
-                            <td>{{ usuario.edad }} años, Obra Social: {{ usuario.obraSocial }}, Tipo: {{usuario.userType}}</td>
+                            <td style="font-size: 13px;"><strong>Edad:</strong> {{ usuario.edad }} <br> <strong>Obra Social:</strong> {{ usuario.obraSocial }} <br> <strong>Tipo:</strong> {{usuario.userType}}</td>
                             <td>{{ usuario.email }}</td>
                             <td>
-                                <button class="btn-accion">Proximamente</button>
+                                Proximamente
                             </td>
                         </ng-container>
                         
@@ -37,11 +37,7 @@
                             </td>
                             <td>{{ usuario.nombre }}</td>
                             <td>{{ usuario.apellido }}</td>
-                            @if (usuario.especialidad != "otra") {
-                                <td>{{ usuario.edad }} años, Especialidad: {{ usuario.especialidad }}, Tipo: {{usuario.userType}}, Verificado por admin: {{usuario.verificadoAdmin}}</td>
-                            } @else {
-                                <td>{{ usuario.edad }} años, Especialidad: {{ usuario.especialidadPersonalizada }}, Tipo: {{usuario.userType}}, Verificado por admin: {{usuario.verificadoAdmin}}</td>
-                            }
+                            <td style="font-size: 13px;"><strong>Edad:</strong> {{ usuario.edad }} <br> <strong>Especialidad:</strong> {{ mostrarEspecialidades(usuario.especialidad) }} <br> <strong>Tipo:</strong> {{usuario.userType}} <br> <strong>Verificado por admin:</strong> {{usuario.verificadoAdmin || 'false'}}</td>
                             <td>{{ usuario.email }}</td>
                             <td>
                                 @if (usuario.verificadoAdmin) {
@@ -62,7 +58,7 @@
                             <td>Tipo: {{usuario.userType}}</td>
                             <td>{{ usuario.email }}</td>
                             <td>
-                                <button class="btn-accion">Proximamente</button>
+                                Proximamente
                             </td>
                         </ng-container>
                     </ng-container>

@@ -6,15 +6,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DateEspañolPipe implements PipeTransform {
   transform(value: Date): string {
-    const diasDeLaSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const mesesDelAno = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 
-    const diaSemana = diasDeLaSemana[value.getDay()];
-    const dia = value.getDate();
+    const dia = value.getDate().toString().padStart(2, '0'); // Asegura que el día tenga dos dígitos
     const mes = mesesDelAno[value.getMonth()];
-    const ano = value.getFullYear();
 
-    return `${diaSemana}, ${dia} de ${mes} de ${ano}`;
+    return `${dia} de ${mes.charAt(0).toUpperCase() + mes.slice(1)}`; // Capitaliza el primer carácter del mes
   }
-
 }

@@ -22,6 +22,20 @@ export class SolicitarTurnoComponent {
   fechaSeleccionada: string = '';
   fechasDisponibles: Date[] = [];
 
+  especialidades:any[] = [
+    { id: 1, nombre: 'Cardiología', imagen: 'img/cardiologia.png' },
+    { id: 2, nombre: 'Dermatología', imagen: 'img/dermatologia.png' },
+    { id: 3, nombre: 'Endocrinología', imagen: 'img/endocrinologia.png' },
+    { id: 4, nombre: 'Gastroenterología', imagen: 'img/gastroenterologia.png' },
+    { id: 5, nombre: 'Ginecología', imagen: 'img/ginecologia.png' },
+    { id: 6, nombre: 'Neurología', imagen: 'img/neurologia.png' },
+    { id: 7, nombre: 'Odontología', imagen: '' },
+    { id: 8, nombre: 'Oftalmología', imagen: 'img/oftalmologia.png' },
+    { id: 9, nombre: 'Otra', imagen: 'otra' }
+  ];
+
+  paso:string = "Selecciona una especialidad";
+
   firestoreSvc = inject(FirestoreService);
   sweetAlert = inject(SweetAlertService);
 
@@ -74,8 +88,9 @@ export class SolicitarTurnoComponent {
     return fechas;
   }
 
+  pacienteSeleccionado:any;
   errMsg: string = "";
-  solicitarTurno(formularioTurno: any): void {
+  solicitarTurno(): void {
     this.isLoading = true;
     this.errMsg = "";
     this.errorStates = {
@@ -87,25 +102,29 @@ export class SolicitarTurnoComponent {
       paciente: false
     };
     var especialidad = this.especialidadSeleccionada;
-    if (this.especialidadSeleccionada === "otra") {
+    if (this.especialidadSeleccionada === "Otra") {
       especialidad = this.otraEspecialidadSeleccionada;
     }
     var userID = this.user.id;
     if (this.user.userType === "admin"){
-      userID = formularioTurno.form.value.paciente;
+      userID = this.pacienteSeleccionado;
     }
-    if (formularioTurno.valid) {
+    if (this.especialidad && this.especialistaSeleccionado && this.fechaSeleccionada && this.horarioSeleccionado) {
       this.firestoreSvc.addDocument("turnos", {
         especialidad: especialidad,
-        especialista: formularioTurno.form.value.especialista,
-        fecha: formularioTurno.form.value.fecha,
-        horario: formularioTurno.form.value.horario,
+        especialista: this.especialistaSeleccionado,
+        fecha: this.fechaSeleccionada,
+        horario: this.horarioSeleccionado,
         paciente: userID,
         estado: 'Pendiente'
       }).then(() => {
         this.isLoading = false;
         this.sweetAlert.showSuccessAlert("Se subió con éxito el producto", "Éxito", "success");
-        formularioTurno.reset(); // Esto reinicia el formulario
+
+        this.paso = "Selecciona una especialidad";
+        this.especialidad = "";
+        this.horarioSeleccionado = "";
+        this.especialistaSeleccionado = '';
         this.especialidadSeleccionada = '';
         this.otraEspecialidadSeleccionada = '';
         this.fechaSeleccionada = '';
@@ -116,26 +135,26 @@ export class SolicitarTurnoComponent {
         this.sweetAlert.showSuccessAlert("Error al solicitar el turno", "Error", "error");
       });
     } else {
-      if (!formularioTurno.form.value.especialidad) {
-        this.errorStates.especialidad = true;
-        this.errMsg = "Complete todos los campos";
-      }
-      if (!formularioTurno.form.value.especialista) {
-        this.errorStates.especialista = true;
-        this.errMsg = "Complete todos los campos";
-      }
-      if (!formularioTurno.form.value.fecha) {
-        this.errorStates.fecha = true;
-        this.errMsg = "Complete todos los campos";
-      }
-      if (!formularioTurno.form.value.horario) {
-        this.errorStates.horario = true;
-        this.errMsg = "Complete todos los campos";
-      }
-      if (!formularioTurno.form.value.paciente && this.user.userType === "admin") {
-        this.errorStates.paciente = true;
-        this.errMsg = "Complete todos los campos";
-      }
+      // if (!formularioTurno.form.value.especialidad) {
+      //   this.errorStates.especialidad = true;
+      //   this.errMsg = "Complete todos los campos";
+      // }
+      // if (!formularioTurno.form.value.especialista) {
+      //   this.errorStates.especialista = true;
+      //   this.errMsg = "Complete todos los campos";
+      // }
+      // if (!formularioTurno.form.value.fecha) {
+      //   this.errorStates.fecha = true;
+      //   this.errMsg = "Complete todos los campos";
+      // }
+      // if (!formularioTurno.form.value.horario) {
+      //   this.errorStates.horario = true;
+      //   this.errMsg = "Complete todos los campos";
+      // }
+      // if (!formularioTurno.form.value.paciente && this.user.userType === "admin") {
+      //   this.errorStates.paciente = true;
+      //   this.errMsg = "Complete todos los campos";
+      // }
       this.isLoading = false;
     }
   }
@@ -143,36 +162,48 @@ export class SolicitarTurnoComponent {
   otraEspecialidad: boolean = false;
   @ViewChild('especialidadPersonalizadaInput') especialidadPersonalizadaInput!: ElementRef;
 
-  onEspecialidadChange(event: any) {
-    this.especialidadSeleccionada = event.target.value;
-    this.otraEspecialidad = this.especialidadSeleccionada === 'otra';
+  async onEspecialidadChange(event: any) {
+    this.especialidadSeleccionada = event;
+    
+    this.otraEspecialidad = this.especialidadSeleccionada === 'Otra';
     if (this.otraEspecialidad) {
       setTimeout(() => {
         this.especialidadPersonalizadaInput.nativeElement.focus();
-      }, 0);
+      }, 100);
     } else {
+      this.isLoading = true;
       this.otraEspecialidadSeleccionada = "";
-      this.firestoreSvc.getDocumentsWhereArrayElementMatches("users", "especialidad", "nombre", this.especialidadSeleccionada).subscribe(especialistas => {
+      await this.firestoreSvc.getDocumentsWhereArrayElementMatches("users", "especialidad", "nombre", this.especialidadSeleccionada).subscribe(especialistas => {
         this.especialistas = especialistas;
       })
+      this.isLoading = false;
+      this.paso = "Seleccione un especialista";
     }
   }
 
-  onOtraEspecialidadChange(value:string) {
-    this.otraEspecialidadSeleccionada = value;
-    this.firestoreSvc.getDocumentsWhereArrayElementMatches("users", "especialidad", "nombre", this.otraEspecialidadSeleccionada).subscribe(especialistas => {
-      this.especialistas = especialistas;
-    })
+  inputOtra:any;
+  onOtraEspecialidadChange() {
+    this.otraEspecialidadSeleccionada = this.inputOtra;
+    if (this.inputOtra) {
+      this.firestoreSvc.getDocumentsWhereArrayElementMatches("users", "especialidad", "nombre", this.otraEspecialidadSeleccionada).subscribe(especialistas => {
+        this.especialistas = especialistas;
+      })
+      this.otraEspecialidad = false;
+      this.paso = "Seleccione un especialista";
+    } else {
+      this.sweetAlert.showSuccessAlert("Ingrese la especialidad", "Error", "error");
+    }
   }
   
  
 
   especialidad:any;
+  especialistaAux:any;
   onEspecialistaChange($event:any): void {
     this.fechasDisponibles = [];
-    this.especialistaSeleccionado = $event.target.value;
+    this.especialistaSeleccionado = $event;
     var auxespecialidad:any = this.especialidadSeleccionada;
-    if (this.especialidadSeleccionada === "otra") {
+    if (this.especialidadSeleccionada === "Otra") {
       auxespecialidad = this.otraEspecialidadSeleccionada;
     }
     this.firestoreSvc.getDocument("users", this.especialistaSeleccionado).subscribe(especialista => {
@@ -183,12 +214,14 @@ export class SolicitarTurnoComponent {
           this.especialidad.horarios.forEach((horario: any) => {
             dias.add(horario.dia);
           });
+          
           this.fechasDisponibles = this.obtenerFechasProximas(Array.from(dias));
         } else {
           this.fechasDisponibles = [];
         }
       }
     })
+    this.paso = "Seleccione una fecha";
   }
 
   obtenerFechasProximas(diasSemana: string[]): Date[] {
@@ -215,22 +248,38 @@ export class SolicitarTurnoComponent {
 
   horarios:any = [];
   onTurnoChange(fecha: any) {
-    const diaSeleccionado = (fecha.target.value).split(",")[0];
+    const formatearFecha = this.trasnformarFecha(fecha);
+    const diaSeleccionado = formatearFecha.split(",")[0]; // Obteniendo el día en formato "09"
     const horario = this.especialidad.horarios.find((horario: any) => horario.dia === diaSeleccionado);
+    
     if (horario) {
-      this.obtenerTurnosReservados(diaSeleccionado, (fecha.target.value).split(",")[1].trim())
-        .subscribe((reservados:any) => {
+        this.obtenerTurnosReservados(formatearFecha)
+        .subscribe((reservados: any) => {
           this.horarios = this.filtrarHorariosDisponibles(horario.horaInicio, horario.horaFin, reservados);
-          
         });
+        this.fechaSeleccionada = formatearFecha;
+        this.paso = "Seleccione un horario";
     } else {
-      this.horarios = [];
+        this.horarios = [];
     }
-  }
+}
 
-  obtenerTurnosReservados(dia: string, fecha: string): Observable<string[]> {
+trasnformarFecha(fecha:Date):string {
+  const diasDeLaSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+  const mesesDelAno = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+  const diaSemana = diasDeLaSemana[fecha.getDay()];
+  const dia = fecha.getDate();
+  const mes = mesesDelAno[fecha.getMonth()];
+  const ano = fecha.getFullYear();
+
+  return `${diaSemana}, ${dia} de ${mes} de ${ano}`;
+}
+
+
+  obtenerTurnosReservados(fecha: string): Observable<string[]> {
     return this.firestore.collection('turnos', ref =>
-      ref.where('fecha', '==', `${dia}, ${fecha}`)
+      ref.where('fecha', '==', `${fecha}`)
          .where('estado', '!=', 'Cancelado')
     ).valueChanges()
      .pipe(
@@ -239,6 +288,7 @@ export class SolicitarTurnoComponent {
   }
 
   filtrarHorariosDisponibles(horaInicio: string, horaFin: string, horariosReservados: string[]): string[] {
+    
     const turnos: string[] = [];
     let [inicioHora, inicioMinuto] = horaInicio.split(':').map(Number);
     let [finHora, finMinuto] = horaFin.split(':').map(Number);
@@ -259,4 +309,31 @@ export class SolicitarTurnoComponent {
     return turnos;
   }
 
+  horarioSeleccionado:any;
+  onHorarioSelected(horario:any):void {
+    this.horarioSeleccionado = horario;
+    this.paso = "Confirme su turno";
+  }
+
+  atrasPaso(){
+    switch (this.paso) {
+      case "Confirme su turno":
+        this.paso = "Seleccione un horario";
+        this.horarioSeleccionado = "";
+        break;
+      case "Seleccione un horario":
+        this.paso = "Seleccione una fecha";
+        this.fechaSeleccionada = ""
+        break;
+      case "Seleccione una fecha":
+        this.paso = "Seleccione un especialista";
+        this.especialistaSeleccionado = "";
+        break;
+      case "Seleccione un especialista":
+        this.paso = "Selecciona una especialidad";
+        this.especialidadSeleccionada = "";
+        this.especialidad = "";
+        break;
+    }
+  }
 }

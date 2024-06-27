@@ -7,7 +7,7 @@
     transition: height 0.3s ease; /* Opcional: para una transición suave de altura */
 }
 
-.login-container form {
+.login-container  {
     padding: 50px 40px;
     border-radius: 15px;
     z-index: 2;
@@ -17,19 +17,19 @@
     justify-content: center; /* Centra los elementos verticalmente */
 }
 
-.login-container form h2 {
+.login-container  h2 {
     font-weight: 500;
     text-align: center;
     letter-spacing:  0.1em;
 }
 
-.login-container form .inputBox {
+.login-container  .inputBox {
     width: 100%;
     position: relative;
-    margin-top: 35px;
+    margin-bottom: 30px;
 }
 
-.login-container form .inputBox input {
+.login-container  .inputBox input {
     position: relative;
     width: 100%;
     padding: 20px 10px 10px;
@@ -44,7 +44,7 @@
     z-index: 3;
 }
 
-.login-container form .inputBox span {
+.login-container  .inputBox span {
     position: absolute;
     left: 0;
     padding: 20px 10px 10px;
@@ -55,13 +55,13 @@
     transition: 0.5s;
 }
 
-.login-container form .inputBox input:valid ~ span,
-.login-container form .inputBox input:focus ~ span {
+.login-container  .inputBox input:valid ~ span,
+.login-container  .inputBox input:focus ~ span {
     font-size: 0.75em;
-    transform: translateY(-34px);
+    translate: translateY(-34px);
 } 
 
-.login-container form .inputBox i {
+.login-container  .inputBox i {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -75,25 +75,25 @@
     box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
 }
 
-.login-container form .inputBox input:valid ~ i,
-.login-container form .inputBox input:focus ~ i,
-.login-container form .inputBox select:valid ~ i,
-.login-container form .inputBox select:focus ~ i {
+.login-container  .inputBox input:valid ~ i,
+.login-container  .inputBox input:focus ~ i,
+.login-container  .inputBox select:valid ~ i,
+.login-container  .inputBox select:focus ~ i {
     height: 44px;
 }
 
-.login-container form .inputBox input[type="file"]:valid,
-.login-container form .inputBox input[type="file"]:focus {
+.login-container  .inputBox input[type="file"]:valid,
+.login-container  .inputBox input[type="file"]:focus {
     left: 0 !important;
 }
 
-.login-container form .links {
+.login-container  .links {
     margin-top: 8px;
     display: flex;
     justify-content: center;
 }
 
-.login-container form .links a {
+.login-container  .links a {
     margin: 10px 0;
     font-size: 0.75em;
     color: black;
@@ -101,12 +101,12 @@
     cursor: pointer;
 }
 
-.login-container form .links a:hover,
-.login-container form .links a:nth-child(2) {
+.login-container  .links a:hover,
+.login-container  .links a:nth-child(2) {
     color: black;
 }
 
-.login-container form input[type="submit"] {
+.login-container  input[type="submit"] {
     border: none;
     outline: none;
     padding: 9px 25px;
@@ -123,7 +123,7 @@
 
 
 
-.login-container form input[type="submit"]:active {
+.login-container  input[type="submit"]:active {
     opacity: 0.8;
 }
 
@@ -149,7 +149,7 @@
     opacity: 0.7;
 }
 
-.login-container form .inputBox svg {
+.login-container  .inputBox svg {
     position: absolute;
     right: 10px;
     bottom: 12px;
@@ -159,8 +159,8 @@
     transition:  0.5s;
 }
 
-.login-container form .inputBox input:valid ~ svg,
-.login-container form .inputBox input:focus ~ svg {
+.login-container  .inputBox input:valid ~ svg,
+.login-container  .inputBox input:focus ~ svg {
     color: white;
 } 
 
@@ -241,8 +241,8 @@ option {
     color: #838383;
 }
 
-.login-container form .inputBox select:valid,
-.login-container form .inputBox select:focus{
+.login-container  .inputBox select:valid,
+.login-container  .inputBox select:focus{
     color: white;
 } 
 
@@ -254,14 +254,14 @@ option {
     font-size: 30px;
     padding: 50px 0px;
     text-align: center;
-    transition: transform 0.2s ease; /* Transición suave del efecto */
+    transition: trans 0.2s ease; /* Transición suave del efecto */
     cursor: pointer;
     color: white;    
     box-shadow: 0 4px 8px 0 rgba(28, 228, 199, 0.5), 0 6px 20px 0 rgba(36, 208, 232, 0.5);
 }
 
 .btnSeleccion:active {
-    transform: scale(0.95);
+    trans: scale(0.95);
 }
 
 .btnSeleccion i {
@@ -291,4 +291,106 @@ option {
     width: 100%;
     align-items: start;
     cursor: pointer;
+}
+
+
+
+
+//!CAMBIOS
+
+.especialidades-container {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.especialidades-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.especialidad-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 30px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100px;
+    height: 150px;
+    text-align: center;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.1);
+}
+
+.especialidad-btn:hover {
+    background-color: #ffffff;
+}
+
+.especialidad-btn img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border-radius: 30px;
+}
+
+.especialidad-btn i {
+    font-size: 80px;
+}
+
+.especialidad-btn div {
+    font-size: 14px;
+}
+
+.containerOtraEspecialidad {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    trans: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+    height: 300px;
+    z-index: 1000;
+    background-color: white;
+    padding: 20px;
+    border-radius: 25px;
+    box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.3);
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (min-width: 576px) {
+    .especialidad-btn {
+        width: 120px;
+        height: 160px;
+    }
+}
+
+@media (min-width: 768px) {
+    .especialidad-btn {
+        width: 140px;
+        height: 180px;
+    }
+}
+
+@media (min-width: 992px) {
+    .especialidad-btn {
+        width: 160px;
+        height: 200px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .especialidad-btn {
+        width: 180px;
+        height: 220px;
+    }
 }
