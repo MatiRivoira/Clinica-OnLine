@@ -2,7 +2,7 @@
 <div class="box-principal">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3" style="padding: 0; padding-top: 10px; padding-bottom: 30px;">
+            <div class="col-lg-2" style="padding: 0; padding-top: 10px; padding-bottom: 30px;">
                 <div class="nav-header">
                     <img class="logo-img" src="favicon.png" alt="+">
                     <h5>Clinica OnLine</h5>
@@ -92,7 +92,7 @@
                         </div>
                     </div>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-10">
                 @switch (this.selectedNavItem) {
                     @case ("dashboard") {
                         <app-dashboard [user]="userReal" (click)="selectNavItem($event)"></app-dashboard>
