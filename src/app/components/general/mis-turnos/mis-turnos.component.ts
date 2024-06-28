@@ -13,7 +13,7 @@ import { VerHistorialClinicoComponent } from '../../historial-clinico/ver-histor
   standalone: true,
   imports: [CommonModule, FormsModule, EncuestaAtencionComponent, VerEncuestaComponent, AltaHistorialClinicoComponent, VerHistorialClinicoComponent],
   templateUrl: './mis-turnos.component.html',
-  styleUrl: './mis-turnos.component.scss'
+  styleUrl: './mis-turnos.component.scss',
 })
 export class MisTurnosComponent {
   turnos: any[] = [];

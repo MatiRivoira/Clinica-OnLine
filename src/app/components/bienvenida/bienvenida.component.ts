@@ -7,7 +7,7 @@ import { RegisterComponent } from '../auth/register/register.component';
   standalone: true,
   imports: [LoginComponent, RegisterComponent],
   templateUrl: './bienvenida.component.html',
-  styleUrl: './bienvenida.component.scss'
+  styleUrl: './bienvenida.component.scss',
 })
 export class BienvenidaComponent {
   register:boolean = false;

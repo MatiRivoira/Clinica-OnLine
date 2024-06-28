@@ -49,3 +49,33 @@ body {
     background: linear-gradient(to right, #ff9d00, #e68027);
     box-shadow: 0 4px 8px 0 rgba(243, 156, 18, 0.5), 0 6px 20px 0 rgba(230, 126, 34, 0.5);  
   }
+
+  @keyframes slideFromBottom {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .slide-from-bottom {
+    animation: slideFromBottom 0.3s ease;
+  }
+
+  @keyframes slideFromTop {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .slide-from-top {
+    animation: slideFromTop 0.3s ease;
+  }

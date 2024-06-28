@@ -23,7 +23,9 @@
                 </tr>
             </tbody>
         </table>
-        <button style="margin-bottom: 20px;" type="button" class="btn-accion">Descargar historial clínico</button>
+        <div class="container-fluid">
+            <button style="margin-bottom: 20px;" type="button" class="btn-accion rojo" (click)="generarYDescargarPDF()">Descargar historial clínico</button>
+        </div>
     </div>
 </div>
 <ng-template #noHistorialTemplate>

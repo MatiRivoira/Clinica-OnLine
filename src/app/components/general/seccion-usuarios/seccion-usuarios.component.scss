@@ -94,3 +94,21 @@ td {
     height: fit-content;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* seccion-usuarios.component.scss */
+.slide-from-bottom {
+    transition: transform 0.3s ease;
+  }
+  
+  .slide-from-bottom.ng-enter,
+  .slide-from-bottom.ng-leave {
+    transform: translateY(100%);
+  }
+  
+  .slide-from-bottom.ng-enter.ng-enter-active,
+  .slide-from-bottom.ng-leave {
+    transform: translateY(0);
+  }
+  
+  
+  

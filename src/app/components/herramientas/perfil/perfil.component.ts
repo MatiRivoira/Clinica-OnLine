@@ -114,4 +114,5 @@ export class PerfilComponent implements OnInit {
     this.horarios.splice(index, 1);
   }
 
+ 
 }

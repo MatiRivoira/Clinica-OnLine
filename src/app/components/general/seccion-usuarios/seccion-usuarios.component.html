@@ -1,5 +1,5 @@
 <h2>Usuarios Registrados</h2>
-<div *ngIf="users$ | async as users" class="tabla-container">
+<div *ngIf="users$" class="tabla-container">
     <table class="table">
         <thead>
             <tr>
@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <ng-container *ngFor="let usuario of users" class="usuario-row">
+            <ng-container *ngFor="let usuario of users$" class="usuario-row">
                 <tr>
                     <ng-container [ngSwitch]="usuario.userType">
                         <!-- Caso Paciente -->
@@ -67,15 +67,16 @@
         </tbody>
     </table>
 </div>
-<div class="container-fluid" style="margin-bottom: 20px;">
-    <button class="btn-accion" (click)="crearAdministrador()">Crear administrador</button>
+<div class="container-fluid">
+    <button class="btn-accion" (click)="crearAdministrador()" >Crear administrador</button>
+    <button class="btn-accion verde" (click)="descargarUsuariosExcel()" >Descargar lista de usuarios</button>
 </div>
-<div *ngIf="mostrarForm" class="form-crear">
-    <app-crear-administrador (creo)="seCreoAdmin($event)"></app-crear-administrador>
+<div *ngIf="mostrarForm" class="form-crear" >
+    <app-crear-administrador (creo)="seCreoAdmin($event)" [class.slide-from-bottom]="mostrarForm"></app-crear-administrador>
 </div>
 
-<div *ngIf="this.historialUsuarioID" class="form-crear">
-    <div class="container-historial-clinico">
+<div class="form-crear" *ngIf="historialUsuarioID">
+    <div class="container-historial-clinico" [class.slide-from-top]="historialUsuarioID">
         <div class="container-fluid" style="display: flex; align-items: start; position: absolute; padding: 0;">
             <div style="cursor: pointer;" (click)="this.historialUsuarioID = ''">
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">

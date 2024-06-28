@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FirestoreService } from '../../../services/firestore.service';
-import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
 import { CrearAdministradorComponent } from '../../auth/crear-administrador/crear-administrador.component';
 import { SweetAlertService } from '../../../services/sweetAlert.service';
-import { isArrayLike } from 'rxjs/internal/util/isArrayLike';
 import { ListarHistorialClinicoComponent } from '../../historial-clinico/listar-historial-clinico/listar-historial-clinico.component';
+import { ExcelDownloadGenericService } from '../../../services/excel-download.service';
+
 
 @Component({
   selector: 'app-seccion-usuarios',
@@ -15,9 +14,10 @@ import { ListarHistorialClinicoComponent } from '../../historial-clinico/listar-
   imports: [CommonModule, ReactiveFormsModule, CrearAdministradorComponent, ListarHistorialClinicoComponent],
   templateUrl: './seccion-usuarios.component.html',
   styleUrl: './seccion-usuarios.component.scss',
+ 
 })
 export class SeccionUsuariosComponent {
-  users$!: Observable<any[]>;
+  users$!: any;
 
   mostrarForm:boolean = false;
 
@@ -25,11 +25,14 @@ export class SeccionUsuariosComponent {
 
   constructor(
     private firestoreSvc: FirestoreService,
-    private sweetalert:SweetAlertService
+    private sweetalert:SweetAlertService,
+    private excelSvc: ExcelDownloadGenericService
   ) {}
 
   ngOnInit(): void {
-    this.users$ = this.firestoreSvc.getDocuments('users');
+    this.firestoreSvc.getDocuments('users').subscribe(data => {
+      this.users$ = data;
+    });
   }
 
   toggleHabilitacion(user: any, bol: boolean) {
@@ -61,5 +64,9 @@ export class SeccionUsuariosComponent {
       retorno = especialidades;
     }
     return retorno;
+  }
+
+  descargarUsuariosExcel(): void {
+    this.excelSvc.descargarExcel(this.users$, "Lista-de-usuarios", "Lista-de-usuarios");
   }
 }
