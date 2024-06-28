@@ -5,23 +5,31 @@ import { FormsModule } from '@angular/forms';
 import { SweetAlertService } from '../../../services/sweetAlert.service';
 import { EncuestaAtencionComponent } from '../../encuesta-atencion/encuesta-atencion.component';
 import { VerEncuestaComponent } from '../../ver-encuesta/ver-encuesta.component';
+import { AltaHistorialClinicoComponent } from '../../historial-clinico/alta-historial-clinico/alta-historial-clinico.component';
+import { VerHistorialClinicoComponent } from '../../historial-clinico/ver-historial-clinico/ver-historial-clinico.component';
 
 @Component({
   selector: 'app-mis-turnos',
   standalone: true,
-  imports: [CommonModule, FormsModule, EncuestaAtencionComponent, VerEncuestaComponent],
+  imports: [CommonModule, FormsModule, EncuestaAtencionComponent, VerEncuestaComponent, AltaHistorialClinicoComponent, VerHistorialClinicoComponent],
   templateUrl: './mis-turnos.component.html',
   styleUrl: './mis-turnos.component.scss'
 })
 export class MisTurnosComponent {
   turnos: any[] = [];
   turnosFiltrados: any[] = [];
-  filtroEspecialidad: string = '';
-  filtroEspecialista: string = '';
+
+  filtro: string = '';
+
   isAdmin: boolean = false;
+
+  reseniaSeleccionada:any;
 
   encuestaAtecion: boolean = false;
   turnoSeleccionado:boolean = false; // boolean 
+
+  altaHistorialClinico:boolean = false; // boolean
+  turnoSeleccionadoFinal:any;
 
   encuestaSeleccionada :string = '';
 
@@ -52,21 +60,31 @@ export class MisTurnosComponent {
   }
 
   aplicarFiltros(): void {
-    switch (this.user.userType) {
-      case "paciente":
-        this.turnosFiltrados = this.turnos.filter(turno =>
-          turno.especialidad.toLowerCase().includes(this.filtroEspecialidad.toLowerCase()) &&
-          this.obtenerUsuario(turno.especialista).toLowerCase().includes(this.filtroEspecialista.toLowerCase())
-        );
-        break;
-      case "especialista":
-        this.turnosFiltrados = this.turnos.filter(turno =>
-          turno.especialidad.toLowerCase().includes(this.filtroEspecialidad.toLowerCase()) &&
-          this.obtenerUsuario(turno.paciente).toLowerCase().includes(this.filtroEspecialista.toLowerCase())
-        );
-        break;
-    }
-    
+    const filtroLowerCase = this.filtro.toLowerCase();
+    this.turnosFiltrados = this.turnos.filter(turno => {
+      return (
+        turno.especialidad.toLowerCase().includes(filtroLowerCase) ||
+        this.obtenerUsuario(turno.especialista).toLowerCase().includes(filtroLowerCase) ||
+        this.obtenerUsuario(turno.paciente).toLowerCase().includes(filtroLowerCase) ||
+        turno.fecha.toLowerCase().includes(filtroLowerCase) ||
+        turno.horario.toLowerCase().includes(filtroLowerCase) ||
+        turno.estado.toLowerCase().includes(filtroLowerCase) ||
+        this.historiaClinicaIncluye(turno.historialClinico, filtroLowerCase)
+      );
+    });
+  }
+
+  historiaClinicaIncluye(historiaClinica: any, filtro: string): boolean {
+    if (!historiaClinica) return false;
+    return (
+      (historiaClinica.altura && historiaClinica.altura.toLowerCase().includes(filtro)) ||
+      (historiaClinica.peso && historiaClinica.peso.toLowerCase().includes(filtro)) ||
+      (historiaClinica.temperatura && historiaClinica.temperatura.toLowerCase().includes(filtro)) ||
+      (historiaClinica.presion && historiaClinica.presion.toLowerCase().includes(filtro)) ||
+      (historiaClinica.datosDinamicos && historiaClinica.datosDinamicos.some((dato:any) => 
+        dato.clave.toLowerCase().includes(filtro) || dato.valor.toLowerCase().includes(filtro)
+      ))
+    );
   }
 
 
@@ -122,36 +140,9 @@ export class MisTurnosComponent {
   }
 
   finalizarTurno(turno: any): void {
-    this.sweetAlert.showPrompt(`Finalizar turno`, 'Por favor, ingresa una reseña de la consulta.')
-      .then(result => {
-        if (result.isConfirmed && result.value) {
-          const resenia = result.value;
-  
-          this.sweetAlert.showPrompt(`Diagnóstico`, 'Por favor, ingresa el diagnóstico realizado.')
-            .then(diagResult => {
-              if (diagResult.isConfirmed && diagResult.value) {
-                const diagnostico = diagResult.value;
-  
-                this.firestoreSvc.updateDocument('turnos', turno.id, { 
-                  estado: "Realizado", 
-                  resenia: resenia, 
-                  diagnostico: diagnostico 
-                })
-                  .then(() => {
-                    this.sweetAlert.showSuccessAlert(`El turno ha sido finalizado.`, "Finalizado", 'success');
-                    this.cargarTurnos(); // Actualiza la lista de turnos después de finalizar
-                  })
-                  .catch(error => {
-                    this.sweetAlert.showSuccessAlert(`No se pudo finalizar el turno.`, 'Error', 'error');
-                    console.error(`Error al finalizar el turno:`, error);
-                  });
-              }
-            });
-        }
-      });
+    this.turnoSeleccionadoFinal = turno;
+    this.altaHistorialClinico = true;
   }
-  
-  
 
   obtenerUsuario(id: string): string {
     const usuario = this.users.find(u => u.id === id);
@@ -179,5 +170,18 @@ export class MisTurnosComponent {
 
   verEncuesta(encuestaId:string) : void {
     this.encuestaSeleccionada = encuestaId;
+  }
+
+  mostrarHistoriaClinica(historiaClinica:any) : string {
+    let retorno = "";
+    if(historiaClinica){
+      retorno = `Altura: ${historiaClinica.altura} <br> Peso: ${historiaClinica.peso} <br> Presión: ${historiaClinica.presion} <br> Temperatura: ${historiaClinica.temperatura}`;
+      if(historiaClinica.datosDinamicos){
+        historiaClinica.datosDinamicos.forEach((dato:any) => {
+          retorno += `<br> ${dato.clave}: ${dato.valor}`;
+        });
+      }
+    }
+    return retorno;
   }
 }

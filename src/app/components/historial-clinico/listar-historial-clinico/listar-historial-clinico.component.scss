@@ -1,0 +1,48 @@
+.tabla-container {
+    overflow-y: auto; /* Barra de desplazamiento vertical si es necesario */
+    
+}
+
+.table {
+    width: 100%;
+    height: fit-content;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+tbody {
+    height: fit-content;
+    border-collapse: collapse;
+}
+
+h2 {
+    color: #272e41;
+    margin-top: 30px;
+    letter-spacing: 1px;
+}
+
+td {
+    display: flex-wrap;
+    align-content: center;
+}
+
+.table th, .table td {
+    border: none;
+    background: none;
+    padding: 10px;
+    text-align: center;
+}
+
+.table th {
+    font-weight: 700;
+    color: #aaabb3;
+    font-size: 25px;
+    letter-spacing: 1px;
+}
+
+.table td {
+    color: #272e41;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 18px;
+}

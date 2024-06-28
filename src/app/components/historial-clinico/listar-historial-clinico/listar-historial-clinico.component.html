@@ -1,0 +1,31 @@
+<h3>Historial clínico</h3>
+<div *ngIf="turnos && turnos.length > 0; else noHistorialTemplate">
+    <div class="tabla-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Altura</th>
+                    <th>Peso</th>
+                    <th>Temperatura</th>
+                    <th>Presión</th>
+                    <th>Datos dinámicos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let turno of turnos">
+                    <td>{{ turno.fecha }}</td>
+                    <td>{{ turno.historialClinico.altura }}</td>
+                    <td>{{ turno.historialClinico.peso }}</td>
+                    <td>{{ turno.historialClinico.temperatura }}</td>
+                    <td>{{ turno.historialClinico.presion }}</td>
+                    <td [innerHTML]="mostrarDatosDinamicos(turno.historialClinico.datosDinamicos)"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button style="margin-bottom: 20px;" type="button" class="btn-accion">Descargar historial clínico</button>
+    </div>
+</div>
+<ng-template #noHistorialTemplate>
+    <p>El usuario todavía no tiene historial clínico.</p>
+</ng-template>

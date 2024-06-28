@@ -3,9 +3,8 @@
 @if (this.user.userType === "paciente") {
   <div class="turnos-container">
     <div class="filtros">
-      <input type="text" [(ngModel)]="filtroEspecialidad" placeholder="Filtrar por especialidad" (input)="aplicarFiltros()">
-      <input type="text" [(ngModel)]="filtroEspecialista" placeholder="Filtrar por especialista" (input)="aplicarFiltros()">
-    </div>  
+      <input style="margin: 0;" type="text" [(ngModel)]="filtro" placeholder="Buscar en turnos" (input)="aplicarFiltros()">
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -14,6 +13,7 @@
           <th>Especialidad</th>
           <th>Especialista</th>
           <th>Estado</th>
+          <th>Historia clinica</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -24,9 +24,10 @@
           <td>{{ turno.especialidad }}</td>
           <td>{{ obtenerUsuario(turno.especialista) }}</td>
           <td>{{ turno.estado }}</td>
+          <td [innerHTML]="mostrarHistoriaClinica(turno.historialClinico)"></td>
           <td>
             <button class="btn-accion rojo" *ngIf="puedeCancelar(turno)" (click)="cancelarTurno(turno, 'Cancelado')">Cancelar</button>
-            <button class="btn-accion" *ngIf="turno.comentario || turno.resenia" (click)="mostrarComentarioF(turno, 'Ver reseña')">Ver reseña</button>
+            <button class="btn-accion" *ngIf="turno.comentario || turno.resenia" (click)="this.reseniaSeleccionada = turno;">Ver reseña</button>
             @if (!turno.encuesta) {
               <button class="btn-accion azul" *ngIf="turno.estado === 'Realizado' && turno.resenia" (click)="this.encuestaAtecion = true; this.turnoSeleccionado = turno">Completar encuesta</button>
             } @else {
@@ -41,9 +42,8 @@
 } @else {
   <div class="turnos-container">
     <div class="filtros">
-      <input type="text" [(ngModel)]="filtroEspecialidad" placeholder="Filtrar por especialidad" (input)="aplicarFiltros()">
-      <input type="text" [(ngModel)]="filtroEspecialista" placeholder="Filtrar por paciente" (input)="aplicarFiltros()">
-    </div>  
+      <input type="text" [(ngModel)]="filtro" placeholder="Buscar en turnos" (input)="aplicarFiltros()">
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -67,7 +67,7 @@
             <button class="btn-accion naranja" *ngIf="!['Aceptado', 'Realizado', 'Cancelado', 'Rechazado'].includes(turno.estado);" (click)="cancelarTurno(turno, 'Rechazado')">Rechazar</button>
             <button class="btn-accion verde" *ngIf="!['Realizado', 'Rechazado', 'Cancelado', 'Aceptado'].includes(turno.estado);" (click)="aceptarTurno(turno)">Aceptar</button>
             <button class="btn-accion azul" *ngIf="['Aceptado'].includes(turno.estado);" (click)="finalizarTurno(turno)">Finalizar</button>
-            <button class="btn-accion" *ngIf="turno.comentario || turno.resenia" (click)="mostrarComentarioF(turno, 'Ver reseña')">Ver reseña</button>
+            <button class="btn-accion" *ngIf="turno.comentario || turno.resenia" (click)="this.reseniaSeleccionada = turno;">Ver reseña</button>
           </td>
         </tr>
       </tbody>
@@ -75,21 +75,7 @@
   </div>
 }
 
-<div class="comentario-container" *ngIf="mostrarComentario">
-  <div class="card">
-    <div class="card-header">
-      <h5 class="card-title">{{title}}</h5>
-      <div class="btn-cerrar" (click)="this.mostrarComentario = false">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-        </svg>
-    </div>
-    </div>
-    <div class="card-body">
-      <p class="card-text" [innerHTML]="comentarioSeleccionado"></p>
-    </div>
-  </div>
-</div>
-
+<app-ver-historial-clinico [turno]="reseniaSeleccionada" (mostrarComentario)="this.reseniaSeleccionada = false"></app-ver-historial-clinico>
 <app-encuesta-atencion [user]="this.user" [turno]="this.turnoSeleccionado" *ngIf="this.encuestaAtecion" (encuestaActive)="this.encuestaAtecion = $event; this.cargarTurnos()"></app-encuesta-atencion>
 <app-ver-encuesta *ngIf="this.encuestaSeleccionada" [encuestaId]="this.encuestaSeleccionada" (cerrarEncuesta)="this.encuestaSeleccionada = $event"></app-ver-encuesta>
+<app-alta-historial-clinico *ngIf="this.altaHistorialClinico" [turno]="turnoSeleccionadoFinal" (cerrarEncuesta)="this.altaHistorialClinico = $event"></app-alta-historial-clinico>

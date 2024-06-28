@@ -9,13 +9,12 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './turnos.component.html',
-  styleUrl: './turnos.component.scss'
+  styleUrls: ['./turnos.component.scss']
 })
 export class TurnosComponent {
   turnos: any[] = [];
   turnosFiltrados: any[] = [];
-  filtroEspecialidad: string = '';
-  filtroEspecialista: string = '';
+  filtro: string = '';
   isAdmin: boolean = false;
 
   users: any[] = [];
@@ -27,23 +26,43 @@ export class TurnosComponent {
 
   ngOnInit(): void {
     this.cargarTurnos();
-    this.firestoreSvc.getDocuments("users").subscribe(turnos => {
-      this.users = turnos;
+    this.firestoreSvc.getDocuments("users").subscribe(users => {
+      this.users = users;
     });
   }
 
   cargarTurnos(): void {
     this.firestoreSvc.getDocuments("turnos").subscribe(turnos => {
       this.turnos = turnos;
-      this.turnosFiltrados = turnos;
+      this.aplicarFiltros();
     });
-    this.aplicarFiltros();
   }
 
   aplicarFiltros(): void {
-    this.turnosFiltrados = this.turnos.filter(turno =>
-      turno.especialidad.toLowerCase().includes(this.filtroEspecialidad.toLowerCase()) &&
-      this.obtenerUsuario(turno.especialista).toLowerCase().includes(this.filtroEspecialista.toLowerCase())
+    const filtroLowerCase = this.filtro.toLowerCase();
+    this.turnosFiltrados = this.turnos.filter(turno => {
+      return (
+        turno.especialidad.toLowerCase().includes(filtroLowerCase) ||
+        this.obtenerUsuario(turno.especialista).toLowerCase().includes(filtroLowerCase) ||
+        this.obtenerUsuario(turno.paciente).toLowerCase().includes(filtroLowerCase) ||
+        turno.fecha.toLowerCase().includes(filtroLowerCase) ||
+        turno.horario.toLowerCase().includes(filtroLowerCase) ||
+        turno.estado.toLowerCase().includes(filtroLowerCase) ||
+        this.historiaClinicaIncluye(turno.historialClinico, filtroLowerCase)
+      );
+    });
+  }
+
+  historiaClinicaIncluye(historiaClinica: any, filtro: string): boolean {
+    if (!historiaClinica) return false;
+    return (
+      (historiaClinica.altura && historiaClinica.altura.toLowerCase().includes(filtro)) ||
+      (historiaClinica.peso && historiaClinica.peso.toLowerCase().includes(filtro)) ||
+      (historiaClinica.temperatura && historiaClinica.temperatura.toLowerCase().includes(filtro)) ||
+      (historiaClinica.presion && historiaClinica.presion.toLowerCase().includes(filtro)) ||
+      (historiaClinica.datosDinamicos && historiaClinica.datosDinamicos.some((dato:any) => 
+        dato.clave.toLowerCase().includes(filtro) || dato.valor.toLowerCase().includes(filtro)
+      ))
     );
   }
 

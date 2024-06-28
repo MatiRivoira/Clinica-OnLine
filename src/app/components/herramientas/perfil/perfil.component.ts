@@ -3,11 +3,12 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FirestoreService } from '../../../services/firestore.service';
 import { SweetAlertService } from '../../../services/sweetAlert.service';
+import { ListarHistorialClinicoComponent } from '../../historial-clinico/listar-historial-clinico/listar-historial-clinico.component';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ListarHistorialClinicoComponent],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.scss'
 })
@@ -15,6 +16,7 @@ export class PerfilComponent implements OnInit {
   @Input() usuario: any; // Objeto para almacenar los datos del usuario actual
   especialidades: any[] = []; // Lista de especialidades asociadas al especialista
   horarios: any[] = []; // Lista de horarios del especialista
+  turnos:any[] = [];
 
   especialidadElegida :number = -1;
 
@@ -30,13 +32,13 @@ export class PerfilComponent implements OnInit {
   bdSvc = inject(FirestoreService);
   sweetAlert = inject(SweetAlertService);
 
-  constructor() { }
-
   ngOnInit(): void {
-    if (this.usuario.horarios) {
-      this.horarios = this.usuario.horarios;
+   if (this.usuario.userType === "especialista"){
+      if (this.usuario.horarios) {
+        this.horarios = this.usuario.horarios;
+      }
+      this.especialidades = this.usuario.especialidad;
     }
-    this.especialidades = this.usuario.especialidad;
   }
 
   onEspecialidadElegida($event:any){
@@ -111,4 +113,5 @@ export class PerfilComponent implements OnInit {
     // Eliminar un horario por índice
     this.horarios.splice(index, 1);
   }
+
 }

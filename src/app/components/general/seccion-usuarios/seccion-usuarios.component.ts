@@ -7,11 +7,12 @@ import { Observable } from 'rxjs';
 import { CrearAdministradorComponent } from '../../auth/crear-administrador/crear-administrador.component';
 import { SweetAlertService } from '../../../services/sweetAlert.service';
 import { isArrayLike } from 'rxjs/internal/util/isArrayLike';
+import { ListarHistorialClinicoComponent } from '../../historial-clinico/listar-historial-clinico/listar-historial-clinico.component';
 
 @Component({
   selector: 'app-seccion-usuarios',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, CrearAdministradorComponent],
+  imports: [CommonModule, ReactiveFormsModule, CrearAdministradorComponent, ListarHistorialClinicoComponent],
   templateUrl: './seccion-usuarios.component.html',
   styleUrl: './seccion-usuarios.component.scss',
 })
@@ -19,6 +20,8 @@ export class SeccionUsuariosComponent {
   users$!: Observable<any[]>;
 
   mostrarForm:boolean = false;
+
+  historialUsuarioID:any;
 
   constructor(
     private firestoreSvc: FirestoreService,

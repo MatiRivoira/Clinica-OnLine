@@ -12,6 +12,7 @@ import { PerfilComponent } from '../herramientas/perfil/perfil.component';
 import { MisTurnosComponent } from '../general/mis-turnos/mis-turnos.component';
 import { SolicitarTurnoComponent } from '../general/solicitar-turno/solicitar-turno.component';
 import { TurnosComponent } from '../general/turnos/turnos.component';
+import { SeccionPacientesComponent } from '../general/seccion-pacientes/seccion-pacientes.component';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,8 @@ import { TurnosComponent } from '../general/turnos/turnos.component';
             PerfilComponent,
             MisTurnosComponent,
             SolicitarTurnoComponent,
-            TurnosComponent
+            TurnosComponent,
+            SeccionPacientesComponent
           ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

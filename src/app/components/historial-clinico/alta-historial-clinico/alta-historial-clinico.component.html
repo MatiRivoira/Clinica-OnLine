@@ -1,0 +1,53 @@
+<div class="modal-overlay">
+    <div class="modal-content">
+      <div class="card-header">
+        <h5 class="card-title">Finalizar turno</h5>
+        <div class="btn-cerrar" (click)="cerrarEncuesta.emit(false)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+          </svg>
+        </div>
+      </div>
+      <form (ngSubmit)="submitForm()" #form="ngForm">
+        <div class="form-group">
+          <label>Reseña de la consulta:</label>
+          <textarea class="form-control" name="resenia" [(ngModel)]="resenia" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Diagnóstico realizado:</label>
+          <textarea class="form-control" name="diagnostico" [(ngModel)]="diagnostico" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Altura:</label>
+          <input type="text" class="form-control" name="altura" [(ngModel)]="datosClinicos.altura" placeholder="Altura">
+        </div>
+        <div class="form-group">
+          <label>Peso:</label>
+          <input type="text" class="form-control" name="peso" [(ngModel)]="datosClinicos.peso" placeholder="Peso">
+        </div>
+        <div class="form-group">
+          <label>Temperatura:</label>
+          <input type="text" class="form-control" name="temperatura" [(ngModel)]="datosClinicos.temperatura" placeholder="Temperatura">
+        </div>
+        <div class="form-group">
+          <label>Presión:</label>
+          <input type="text" class="form-control" name="presion" [(ngModel)]="datosClinicos.presion" placeholder="Presión">
+        </div>
+        <!-- Datos dinámicos -->
+        <div class="form-group" *ngFor="let dato of datosClinicos.dinamicos; let i = index;">
+          <label>Dato Dinámico {{ i + 1 }}:</label>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="form-control" name="{{ 'clave' + i }}" [(ngModel)]="dato.clave" placeholder="Clave">
+            </div>
+            <div class="col">
+              <input type="text" class="form-control" name="{{ 'valor' + i }}" [(ngModel)]="dato.valor" placeholder="Valor">
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-accion verde" (click)="agregarDato()">Agregar Dato Dinámico</button><br>
+        <button type="submit" class="btn-accion">Finalizar Turno</button>
+      </form>
+    </div>
+  </div>
+  <app-loading [isLoading]="isLoading"></app-loading>

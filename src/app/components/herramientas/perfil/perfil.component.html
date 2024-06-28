@@ -3,7 +3,7 @@
 <div *ngIf="usuario" style="padding-left: 30px; padding-right: 30px;">
   <div class="container container-perfil">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-4" style="display: flex; flex-direction: row;">
         <img [src]="usuario.img" alt="Perfil">
         @if (usuario.img2) {
           <img [src]="usuario.img2" alt="Perfil">
@@ -21,6 +21,12 @@
       </div>
     </div>
   </div>
+
+  <br><br>
+
+  @if (usuario.userType === "paciente") {
+    <app-listar-historial-clinico [usuarioID]="this.usuario.id"></app-listar-historial-clinico>
+  }
   
   @if (usuario.userType === "especialista") {
     <h3>Mis Horarios</h3>
