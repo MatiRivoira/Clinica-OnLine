@@ -1,38 +1,25 @@
 <h2>Pacientes</h2>
+
 <div *ngIf="pacientes" class="tabla-container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Foto</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Edad</th>
-                <th>Obra social:</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <ng-container *ngFor="let usuario of pacientes" class="usuario-row">
-                <tr>
-                    <ng-container [ngSwitch]="usuario.userType">
-                        <ng-container *ngSwitchCase="'paciente'">
-                            <td>
-                                <img [src]="usuario.img || 'assets/default-avatar.png'" alt="perfil" class="usuario-avatar">
-                                <img *ngIf="usuario.img2" [src]="usuario.img2" alt="perfil 2" class="usuario-avatar">
-                            </td>
-                            <td>{{ usuario.nombre }}</td>
-                            <td>{{ usuario.apellido }}</td>
-                            <td>{{ usuario.edad }}</td>
-                            <td>{{ usuario.obraSocial }}</td>
-                            <td>
-                                <button class="btn-accion" (click)="this.historialUsuarioID = usuario.id">Ver historial clinico</button>
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                </tr>
-            </ng-container>
-        </tbody>
-    </table>
+    <div class="card-container">
+        <div class="card" *ngFor="let usuario of pacientes">
+            <div class="card-header">
+                <img [src]="usuario.img" alt="perfil" class="usuario-avatar">
+                <div class="usuario-info">
+                    <span>{{ usuario.nombre }}</span>
+                    <span>{{ usuario.apellido }}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="detalle-turnos">
+                    
+                </div>
+                <div class="acciones">
+                    <button class="btn-accion" (click)="this.historialUsuarioID = usuario.id">Ver historial clínico</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div *ngIf="this.historialUsuarioID" class="form-crear">

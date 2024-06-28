@@ -15,6 +15,7 @@ export class SeccionPacientesComponent implements OnInit {
 
   pacientes!:any;
   users:any;
+  turnos:any;
   
   historialUsuarioID:any;
 
@@ -30,6 +31,8 @@ export class SeccionPacientesComponent implements OnInit {
     this.bdSvc.getDocumentsWhere("turnos", "especialista", this.user.id).subscribe(turnos => {
       const idsPacientes = new Set<number>();
 
+      this.turnos = turnos;
+
       // Recorrer los turnos y agregar los IDs de pacientes únicos al conjunto
       turnos.forEach(turno => {
         idsPacientes.add(turno.paciente);
@@ -43,7 +46,4 @@ export class SeccionPacientesComponent implements OnInit {
     });
   }
 
-  verHistorial(historialClinico:any):void {
-    
-  }
 }

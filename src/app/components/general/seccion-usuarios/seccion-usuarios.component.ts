@@ -69,4 +69,38 @@ export class SeccionUsuariosComponent {
   descargarUsuariosExcel(): void {
     this.excelSvc.descargarExcel(this.users$, "Lista-de-usuarios", "Lista-de-usuarios");
   }
+
+  descargarUsuarioExcel(usuario: any): void {
+    let data:any;
+    switch (usuario.userType) {
+      case "paciente":
+        this.firestoreSvc.getDocumentsWhere("turnos", "paciente", usuario.id).subscribe((turnos:any) => {
+          this.excelSvc.descargarExcel(turnos, `Datos_${usuario.nombre}_${usuario.apellido}`, `Datos_${usuario.nombre}_${usuario.apellido}`);
+        });
+        break;
+      case "especialista":
+        data = [
+          ["Nombre", usuario.nombre],
+          ["Apellido", usuario.apellido],
+          ["Edad", usuario.edad.toString()],
+          ["Especialidades", this.mostrarEspecialidades(usuario.especialidad)],
+          ["Tipo", usuario.userType],
+          ["Email", usuario.email],
+          ["Verificada por admin", usuario.verificadoAdmin]
+        ]
+        this.excelSvc.descargarExcel(data, `Datos_${usuario.nombre}_${usuario.apellido}`, `Datos_${usuario.nombre}_${usuario.apellido}`);
+        break;
+      case "admin":
+        data = [
+          ["Nombre", usuario.nombre],
+          ["Apellido", usuario.apellido],
+          ["Edad", usuario.edad.toString()],
+          ["Tipo", usuario.userType],
+          ["Email", usuario.email]
+        ]
+        this.excelSvc.descargarExcel(data, `Datos_${usuario.nombre}_${usuario.apellido}`, `Datos_${usuario.nombre}_${usuario.apellido}`);
+        break;
+    }
+  }
+
 }

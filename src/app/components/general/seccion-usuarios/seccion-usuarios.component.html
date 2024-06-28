@@ -1,76 +1,50 @@
 <h2>Usuarios Registrados</h2>
+
 <div *ngIf="users$" class="tabla-container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Foto</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Detalles</th>
-                <th>Email</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <ng-container *ngFor="let usuario of users$" class="usuario-row">
-                <tr>
-                    <ng-container [ngSwitch]="usuario.userType">
-                        <!-- Caso Paciente -->
-                        <ng-container *ngSwitchCase="'paciente'">
-                            <td>
-                                <img [src]="usuario.img || 'assets/default-avatar.png'" alt="perfil" class="usuario-avatar">
-                                <img *ngIf="usuario.img2" [src]="usuario.img2" alt="perfil 2" class="usuario-avatar">
-                            </td>
-                            <td  style="text-align: center;">{{ usuario.nombre }}</td>
-                            <td>{{ usuario.apellido }}</td>
-                            <td style="font-size: 13px;"><strong>Edad:</strong> {{ usuario.edad }} <br> <strong>Obra Social:</strong> {{ usuario.obraSocial }} <br> <strong>Tipo:</strong> {{usuario.userType}}</td>
-                            <td>{{ usuario.email }}</td>
-                            <td>
-                                <button class="btn-accion amarillo" (click)="this.historialUsuarioID = usuario.id">Ver historial clinico</button>
-                            </td>
-                        </ng-container>
-                        
-                        <!-- Caso Especialista -->
-                        <ng-container *ngSwitchCase="'especialista'">
-                            <td>
-                                <img [src]="usuario.img || 'assets/default-avatar.png'" alt="perfil" class="usuario-avatar">
-                            </td>
-                            <td>{{ usuario.nombre }}</td>
-                            <td>{{ usuario.apellido }}</td>
-                            <td style="font-size: 13px;"><strong>Edad:</strong> {{ usuario.edad }} <br> <strong>Especialidad:</strong> {{ mostrarEspecialidades(usuario.especialidad) }} <br> <strong>Tipo:</strong> {{usuario.userType}} <br> <strong>Verificado por admin:</strong> {{usuario.verificadoAdmin || 'false'}}</td>
-                            <td>{{ usuario.email }}</td>
-                            <td>
-                                @if (usuario.verificadoAdmin) {
-                                    <button class="btn-accion rojo" (click)="toggleHabilitacion(usuario, false)">Inahabilitar</button>
-                                } @else {
-                                    <button class="btn-accion" (click)="toggleHabilitacion(usuario, true)">Habilitar</button>
-                                }
-                            </td>
-                        </ng-container>
-                        
-                        <!-- Caso Admin -->
-                        <ng-container *ngSwitchCase="'admin'">
-                            <td>
-                                <img [src]="usuario.img || 'assets/default-avatar.png'" alt="perfil" class="usuario-avatar">
-                            </td>
-                            <td>{{ usuario.nombre }}</td>
-                            <td>{{ usuario.apellido }}</td>
-                            <td>Tipo: {{usuario.userType}}</td>
-                            <td>{{ usuario.email }}</td>
-                            <td>
-                                Proximamente
-                            </td>
-                        </ng-container>
-                    </ng-container>
-                </tr>
-            </ng-container>
-        </tbody>
-    </table>
+    <div class="card-container">
+        <div class="card" *ngFor="let usuario of users$">
+            <div class="card-header">
+                <img [src]="usuario.img || 'assets/default-avatar.png'" alt="perfil" class="usuario-avatar">
+                <div class="usuario-info">
+                    <span>{{ usuario.nombre }}</span>
+                    <span>{{ usuario.apellido }}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Detalles del usuario -->
+                <div>
+                    <strong>Edad:</strong> {{ usuario.edad }} <br>
+                    <strong>Tipo:</strong> {{ usuario.userType }} <br>
+                    <strong>Email:</strong> {{ usuario.email }} <br>
+                    @if (usuario.userType === "paciente") {
+                        <strong>Obra Social:</strong> {{ usuario.obraSocial }} <br>
+                    } @else if (usuario.userType === "especialista") {
+                        <strong>Especialidad:</strong> {{ mostrarEspecialidades(usuario.especialidad) }} <br>
+                        <strong>Verificado por admin:</strong> {{usuario.verificadoAdmin || 'false'}}
+                    }
+                </div>
+                <!-- Acciones -->
+                <div class="acciones">
+                    @if (usuario.userType === "paciente") {
+                        <button class="btn-accion amarillo" (click)="this.historialUsuarioID = usuario.id">Ver historial clinico</button>
+                    } @else if (usuario.userType === "especialista") {
+                        @if (usuario.verificadoAdmin) {
+                            <button class="btn-accion rojo" (click)="toggleHabilitacion(usuario, false)">Inahabilitar</button>
+                        } @else {
+                            <button class="btn-accion" (click)="toggleHabilitacion(usuario, true)">Habilitar</button>
+                        }
+                    }
+                    <button class="btn-accion azul" (click)="descargarUsuarioExcel(usuario)">Descargar datos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" style="position: absolute; bottom: 10px;">
+        <button class="btn-accion" (click)="crearAdministrador()" >Crear administrador</button>
+        <button class="btn-accion verde" (click)="descargarUsuariosExcel()" >Descargar lista de usuarios</button>
+    </div>
 </div>
-<div class="container-fluid">
-    <button class="btn-accion" (click)="crearAdministrador()" >Crear administrador</button>
-    <button class="btn-accion verde" (click)="descargarUsuariosExcel()" >Descargar lista de usuarios</button>
-</div>
+
 <div *ngIf="mostrarForm" class="form-crear" >
     <app-crear-administrador (creo)="seCreoAdmin($event)" [class.slide-from-bottom]="mostrarForm"></app-crear-administrador>
 </div>

@@ -1,70 +1,80 @@
-.tabla-container {
-    height: 80vh; /* Altura del 80% de la ventana gráfica */
-    overflow-y: auto; /* Barra de desplazamiento vertical si es necesario */
-}
-
-.table {
-    width: 100%;
-    height: fit-content;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-tbody {
-    height: fit-content;
-    border-collapse: collapse;
-}
-
 h2 {
-    color: #272e41;
-    margin-top: 20px;
-    letter-spacing: 1px;
+    margin-top: 30px;
 }
 
-td {
-    display: flex-wrap;
-    align-content: center;
+.tabla-container {
+    height: 80vh;
+    overflow-y: auto;
+    margin-top: 30px;
 }
 
-.table th, .table td {
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card {
+    background: #fff;
+    border-radius: 30px;
     border: none;
-    background: none;
-    padding: 10px;
-    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
 }
 
-.table th {
-    font-weight: 700;
-    color: #aaabb3;
-    font-size: 20px;
-    letter-spacing: 1px;
-}
-
-.table td {
-    color: #272e41;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-    font-size: 18px;
+.card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    border-radius: 30px 30px 0px 0px;
 }
 
 .usuario-avatar {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    margin-right: 10px;
 }
 
-.usuario-row:hover {
-    background-color: #f0f0f0;
+.usuario-info {
+    display: flex;
+    flex-direction: column;
 }
 
-.btn {
-    margin-right: 5px;
+.card-body {
+    display: flex;
+    flex-direction: column;
 }
 
+.detalle-turnos {
+    margin-bottom: 10px;
+}
 
-.container-fluid {
-    position: relative;
-    z-index: 1;
+.turno-item {
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background: #f0f0f0;
+}
+
+.acciones {
+    margin-top: auto;
+    text-align: center;
+}
+
+.btn-accion {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-accion:hover {
+    background-color: #0056b3;
 }
 
 .form-crear {
@@ -76,16 +86,10 @@ td {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para enfocar el formulario */
-    z-index: 1000; /* Alto z-index para superponer */
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
-.form-crear app-crear-administrador {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 .container-historial-clinico {
     background: #fff;
     padding: 20px;
@@ -93,4 +97,15 @@ td {
     width: fit-content;
     height: fit-content;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container-fluid {
+    position: relative;
+    z-index: 1;
+}
+
+svg {
+    width: 40px;
+    height: 40px;
+    fill: currentColor;
 }
