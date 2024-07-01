@@ -26,18 +26,18 @@ La Clínica Online dispone de seis consultorios, dos laboratorios físicos y una
   - Subida de imagen de perfil.
 - Validación de campos según corresponda.
 
-    <img src="/public/readme/registro.png" alt="Logo de la Clínica Online" width="200" height="200">
+    <img src="/public/readme/registro.png" alt="Logo de la Clínica Online"  height="200">
 #### Login
 - Acceso seguro al sistema con botones de acceso rápido.
 - Validación de usuarios: Especialistas requieren aprobación de administrador y verificación de email; Pacientes deben verificar email al registrarse.
 
-    <img src="/public/readme/login.png" alt="Logo de la Clínica Online" width="200" height="200">
+    <img src="/public/readme/login.png" alt="Logo de la Clínica Online"  height="200">
 #### Sección Usuarios (Administrador)
 - Visualización y gestión de información de usuarios.
 - Habilitación/inhabilitación de acceso para Especialistas.
 - Creación de nuevos usuarios, incluyendo Administradores.
 
-    <img src="/public/readme/seccion-usuarios.png" alt="Logo de la Clínica Online" width="200" height="200">
+    <img src="/public/readme/seccion-usuarios.png" alt="Logo de la Clínica Online"  height="200">
 ### Sprint 2
 
 #### Mis Turnos
@@ -50,6 +50,7 @@ La Clínica Online dispone de seis consultorios, dos laboratorios físicos y una
   - Completar encuesta de atención.
   - Calificar atención post-turno.
 
+    <img src="/public/readme/mis-turnos-paciente.png" alt="Logo de la Clínica Online"  height="200">
 ##### Especialista
 - Visualización de turnos asignados con filtro por Especialidad y Paciente.
 - Acciones disponibles:
@@ -57,25 +58,26 @@ La Clínica Online dispone de seis consultorios, dos laboratorios físicos y una
   - Rechazar turno con motivo.
   - Aceptar turno pendiente.
   - Finalizar turno con reseña.
+    <img src="/public/readme/mis-turnos-especialista.png" alt="Logo de la Clínica Online"  height="200">
 
 #### Turnos (Administrador)
 - Visualización de todos los turnos de la clínica con filtro por Especialidad y Especialista.
 - Acción de cancelación de turno con comentario.
 
-    <img src="/public/readme/turnos.png" alt="Logo de la Clínica Online" width="200" height="200">
+    <img src="/public/readme/turnos.png" alt="Logo de la Clínica Online"  height="200">
 #### Solicitar Turno
 - Acceso para Pacientes y Administradores.
 - Selección de Especialidad y Especialista.
 - Elección de día y horario de consulta dentro de los próximos 15 días según disponibilidad.
 - Asignación de paciente por Administrador.
 
-    <img src="/public/readme/solicitar-turno.png" alt="Logo de la Clínica Online" width="200" height="200">
+    <img src="/public/readme/solicitar-turno.png" alt="Logo de la Clínica Online"  height="200">
 #### Mi Perfil
 - Visualización y edición de datos de usuario (nombre, apellido, imágenes, etc.).
 - **Especialistas:**
   - Gestión de disponibilidad horaria por especialidad.
 
-    <img src="/public/readme/perfil.png" alt="Logo de la Clínica Online" width="200" height="200">
+    <img src="/public/readme/perfil.png" alt="Logo de la Clínica Online"  height="200">
 ### Sprint 3
 
 #### Historia Clínica
@@ -98,7 +100,7 @@ La Clínica Online dispone de seis consultorios, dos laboratorios físicos y una
 - **Administrador:** Exportar datos de usuarios a Excel desde Sección Usuarios.
 - **Paciente:** Descargar PDF de Historia Clínica con logo de la clínica, título del informe y fecha de emisión.
 
-    <img src="/public/readme/historia-clinica-png" alt="Logo de la Clínica Online" width="200" height="200">
+    <img src="/public/readme/historia-clinica.png" alt="Logo de la Clínica Online"  height="200">
 ### Sprint 4
 
 #### Gráficos y Estadísticas (Administrador)
