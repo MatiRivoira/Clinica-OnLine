@@ -12,7 +12,7 @@
             </div>
             <div class="card-body">
                 <div class="detalle-turnos">
-                    
+                    <p [innerHTML]="mostrarUltimosTurnos(usuario.id)"></p>
                 </div>
                 <div class="acciones">
                     <button class="btn-accion" (click)="this.historialUsuarioID = usuario.id">Ver historial clínico</button>
