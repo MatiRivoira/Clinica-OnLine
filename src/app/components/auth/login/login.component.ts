@@ -82,6 +82,7 @@ export class LoginComponent implements OnInit{
           return;
         }
         this.isLoading = false;
+        this.logUserLogin(formData.email);
         this.router.navigateByUrl("/home");
       })
       .catch(err => {
@@ -111,6 +112,14 @@ export class LoginComponent implements OnInit{
        
       });
     }
+  }
+
+  private logUserLogin(user:string) {
+    const logEntry = {
+      usuario: user,
+      fechaDeIngreso: new Date().toISOString()
+    };
+    this.firestoreService.addDocument("logs", logEntry);
   }
 
   autoFill(user:string) : void {
