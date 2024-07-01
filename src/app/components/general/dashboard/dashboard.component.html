@@ -13,4 +13,40 @@
             <img [src]="user.img" alt="Perfil" (click)="handleClick($event, 'perfil')">
         </div>
     </div>
+    @if (user.userType == 'paciente') {
+        <div class="container-fluid" style="padding-left: 0;">
+            <div class="row" style="padding-right: 20px;">
+                <div class="col-lg-3">
+                    <h2>{{user.edad}}</h2>
+                    <p>Años</p>
+                </div>
+                <div class="col-lg-3">
+                    <h2>{{ultimoTurno.historialClinico.altura}}</h2>
+                    <p>Altura, cm</p>
+                </div>
+                <div class="col-lg-3">
+                    <h2>{{ultimoTurno.historialClinico.peso}}</h2>
+                    <p>Peso, kg</p>
+                </div>
+                <div class="col-lg-3">
+                    <h2>A+</h2>
+                    <p>Tipo de sangre</p>
+                </div>
+            </div>
+            <div class="row" style="gap: 30px; margin-top: 25px;">
+                <div class="col-lg-4 dataContainer" style="background-image: url('img/temperatura.png');">
+                    <p>Temperatura</p>
+                    <h1>{{ultimoTurno.historialClinico.temperatura}}°</h1>
+                </div>
+                <div class="col-lg-4 dataContainer sinIMG">
+                    <p>Ultimo turno</p>
+                    <p style="margin-top: 115px;">{{ultimoTurno.fecha}}</p>
+                </div>
+                <div class="col-lg-4 dataContainer" style="background-image: url('img/presion.png');" >
+                    <p>Presión</p>
+                    <h1>{{ultimoTurno.historialClinico.presion}}</h1>
+                </div>
+            </div>
+        </div>
+    }
 </div>

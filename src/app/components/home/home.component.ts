@@ -60,6 +60,10 @@ export class HomeComponent implements OnInit, OnDestroy {
                 if (this.retryInterval) {
                   this.retryInterval.unsubscribe();
                 }
+                this.storeSvc.getDocuments('turnos').subscribe((doc) => {
+                  this.turnos = doc;
+                  this.mostrarUltimosTurnos(user.uid);
+                })
               }
             });
           } else {
@@ -80,5 +84,19 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   selectNavItem(navItem: string): void {
     this.selectedNavItem = navItem;
+  }
+
+
+  turnos:any[] = [];
+  utlimoTurno:any = { historialClinico: { altura: '', peso: '', presion: '' }};
+  mostrarUltimosTurnos(usuarioID: string): void {
+  
+    // Filtrar los turnos del usuario
+    let turnosUsuario = this.turnos.filter((turno:any) => turno.paciente === usuarioID && turno.estado === "Realizado");
+  
+    // Ordenar los turnos por fecha (asumiendo que la fecha está en formato ISO 8601)
+    turnosUsuario.sort((a:any, b:any) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime());
+  
+    this.utlimoTurno = turnosUsuario[0];
   }
 }

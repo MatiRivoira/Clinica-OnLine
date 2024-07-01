@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject, input } from '@angular/core';
+import { FirestoreService } from '../../../services/firestore.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,6 +10,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class DashboardComponent  {
   @Input() user:any;
+  @Input() ultimoTurno:any;
   @Output() click = new EventEmitter<any>();
 
   handleClick(event: Event, action?: string) {
