@@ -58,6 +58,8 @@ La Clínica Online dispone de seis consultorios, dos laboratorios físicos y una
   - Rechazar turno con motivo.
   - Aceptar turno pendiente.
   - Finalizar turno con reseña.
+ 
+
     <img src="/public/readme/mis-turnos-especialista.png" alt="Logo de la Clínica Online"  height="200">
 
 #### Turnos (Administrador)
