@@ -3,13 +3,13 @@
 <div *ngIf="usuario" style="padding-left: 30px; padding-right: 30px;">
   <div class="container container-perfil">
     <div class="row">
-      <div class="col-lg-4" style="display: flex; flex-direction: row;">
+      <div class="col-lg-6" style="display: flex; flex-direction: row;">
         <img [src]="usuario.img" alt="Perfil">
         @if (usuario.img2) {
           <img [src]="usuario.img2" alt="Perfil">
         }
       </div>
-      <div class="col-lg-8">
+      <div class="col-lg-6">
         <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
         <p><strong>Apellido:</strong> {{ usuario.apellido }}</p>
         <p><strong>DNI:</strong> {{ usuario.dni }}</p>

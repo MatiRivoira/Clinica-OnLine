@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { FirestoreService } from '../../../services/firestore.service';
 import { PdfDownloadService } from '../../../services/pdf-download.service';
+import { SweetAlertService } from '../../../services/sweetAlert.service';
 
 @Component({
   selector: 'app-listar-historial-clinico',
@@ -20,6 +21,7 @@ export class ListarHistorialClinicoComponent implements OnChanges {
   bdSvc = inject(FirestoreService);
   pdfSvc = inject(PdfDownloadService);
   firestoreSvc = inject(FirestoreService);
+  alert = inject(SweetAlertService);
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['usuarioID']) {
@@ -41,22 +43,33 @@ export class ListarHistorialClinicoComponent implements OnChanges {
     return datos.map(dato => `${dato.clave}: ${dato.valor}`).join('<br>');
   }
 
-  generarYDescargarPDF(): void {
-    let contenidoPDF = '';
+  especialidades!:any;
+  generarYDescargarPDF(turnos:any[], cerrarFrm:boolean = false): void {
+    if (turnos) {
+      let contenidoPDF = '';
 
-    this.turnos.forEach(turno => {
-      contenidoPDF += `
-        Fecha: ${turno.fecha}
-        Horario: ${turno.horario}
-        Especialidad: ${turno.especialidad}
-        Especialista: ${this.obtenerUsuario(turno.especialista)}
-        Paciente: ${this.obtenerUsuario(turno.paciente)}
-        Estado: ${turno.estado}
-        ----------------------------------------------
-      `;
-    });
+      turnos.forEach(turno => {
+        contenidoPDF += `
+          Fecha: ${turno.fecha}
+          Especialidad: ${turno.especialidad}
+          Especialista: ${this.obtenerUsuario(turno.especialista)}
+          Altura: ${turno.historialClinico.altura}
+          Peso: ${turno.historialClinico.peso}
+          Temperatura: ${turno.historialClinico.temperatura}
+          Presión: ${turno.historialClinico.presion}
+          Datos dinámicos: ${this.mostrarDatosDinamicos(turno.historialClinico.datosDinamicos)}
+          ----------------------------------------------
+        `;
+      });
 
-    this.pdfSvc.downloadPDF(contenidoPDF, 'Turnos');
+      this.pdfSvc.downloadPDF(contenidoPDF, 'Turnos');
+
+      if (cerrarFrm) {
+        this.especialidades = undefined;
+      }
+    } else {
+      this.alert.showSuccessAlert("Seleccione una especialidad", "Error", "error");
+    }
   }
 
   obtenerUsuario(id: string): string {
@@ -65,5 +78,24 @@ export class ListarHistorialClinicoComponent implements OnChanges {
       return `${usuario.nombre} ${usuario.apellido}`;
     }
     return ''; // Manejar caso donde no se encuentra el usuario
+  }
+
+  descargarPorEspecialidad() : void{
+    this.turnos.forEach((turno) => {
+      this.especialidades = this.guardarSinRepetir(this.especialidades, turno.especialidad);
+    });
+  }
+
+  especialidadElegida!:string;
+  turnosFiltradosPorEspecialidad!:any[];
+  onEspecialidadElegida($event:any){
+    this.especialidadElegida = $event.target.value;
+    this.turnosFiltradosPorEspecialidad = this.turnos.filter(turno => turno.especialidad === this.especialidadElegida);
+  }
+
+  guardarSinRepetir(arrayOriginal: any[], elemento: any): any[] {
+    const set = new Set(arrayOriginal);
+    set.add(elemento)
+    return Array.from(set);
   }
 }
