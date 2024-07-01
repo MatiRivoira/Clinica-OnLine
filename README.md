@@ -50,6 +50,7 @@ La Clínica Online dispone de seis consultorios, dos laboratorios físicos y una
   - Completar encuesta de atención.
   - Calificar atención post-turno.
 
+    <img src="/public/readme/mis-turnos-paciente.png" alt="Logo de la Clínica Online"  height="200">
 ##### Especialista
 - Visualización de turnos asignados con filtro por Especialidad y Paciente.
 - Acciones disponibles:
@@ -57,6 +58,7 @@ La Clínica Online dispone de seis consultorios, dos laboratorios físicos y una
   - Rechazar turno con motivo.
   - Aceptar turno pendiente.
   - Finalizar turno con reseña.
+    <img src="/public/readme/mis-turnos-especialista.png" alt="Logo de la Clínica Online"  height="200">
 
 #### Turnos (Administrador)
 - Visualización de todos los turnos de la clínica con filtro por Especialidad y Especialista.
@@ -98,7 +100,7 @@ La Clínica Online dispone de seis consultorios, dos laboratorios físicos y una
 - **Administrador:** Exportar datos de usuarios a Excel desde Sección Usuarios.
 - **Paciente:** Descargar PDF de Historia Clínica con logo de la clínica, título del informe y fecha de emisión.
 
-    <img src="/public/readme/historia-clinica-png" alt="Logo de la Clínica Online"  height="200">
+    <img src="/public/readme/historia-clinica.png" alt="Logo de la Clínica Online"  height="200">
 ### Sprint 4
 
 #### Gráficos y Estadísticas (Administrador)
