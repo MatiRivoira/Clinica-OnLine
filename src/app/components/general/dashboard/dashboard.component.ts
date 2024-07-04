@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FirestoreService } from '../../../services/firestore.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { PdfDownloadService } from '../../../services/pdf-download.service';
@@ -17,7 +17,7 @@ import { CopyToClipboardDirective } from '../../../directives/copy-to-clipboard.
   styleUrl: './dashboard.component.scss',
   providers: [DiaHorarioPipePipe , TransformarIDaStringPipe, GraficoToStringPipe]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   @Input() user:any;
   @Input() ultimoTurno:any;
   @Output() click = new EventEmitter<any>();
@@ -58,7 +58,8 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+
+  ngOnChanges(changes: SimpleChanges): void {
     if (this.user.userType === "admin") {
       this.dataService.getDocuments("users").subscribe(data => {
         this.users = data;
