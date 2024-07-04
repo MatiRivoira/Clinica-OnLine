@@ -123,9 +123,12 @@ img, .btn-notificaciones {
 
 .grafic-container {
     position: relative;
-    height: 300px;
+    height: 140px;
+    margin-bottom: 80px;
 
     h2 {
+        font-size: 20px;
+        margin-top: -40px;
         width: 100%;
         position: absolute;
     }

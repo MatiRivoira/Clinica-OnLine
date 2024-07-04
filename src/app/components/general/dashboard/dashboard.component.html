@@ -93,10 +93,10 @@
     }
 
     @if (user.userType == "admin") {
-        <div class="container-fluid">
+        <div class="container-fluid" style="margin-top: 30px;">
             <div class="row">
                 <div class="col-lg-12 grafic-container">
-                    <h2 style="margin-bottom: 25px;">Log de Ingresos al Sistema</h2>
+                    <h2 style="margin-top: -60px;">Log de Ingresos al Sistema</h2>
                     <ngx-charts-advanced-pie-chart
                         [scheme]="colorScheme"
                         [results]="logIngresos"
@@ -141,7 +141,7 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid" style="margin-top: -60px;">
+        <div class="container-fluid" style="margin-top: -110px;">
               <button class="btn-accion rojo" (click)="exportToPDF()">Exportar a PDF</button>
               <button class="btn-accion verde" (click)="exportToExcel()">Exportar a Excel</button>
         </div>
