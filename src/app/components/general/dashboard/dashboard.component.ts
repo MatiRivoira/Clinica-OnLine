@@ -6,11 +6,13 @@ import { ExcelDownloadGenericService } from '../../../services/excel-download.se
 import { TransformarIDaStringPipe } from '../../../pipes/transformar-ida-string.pipe';
 import { DiaHorarioPipePipe } from '../../../pipes/dia-horario-pipe.pipe';
 import { GraficoToStringPipe } from '../../../pipes/grafico-to-string.pipe';
+import { MoveSVGDirective } from '../../../directives/move-svg.directive';
+import { CopyToClipboardDirective } from '../../../directives/copy-to-clipboard.directive';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgxChartsModule],
+  imports: [NgxChartsModule, MoveSVGDirective, CopyToClipboardDirective],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   providers: [DiaHorarioPipePipe , TransformarIDaStringPipe, GraficoToStringPipe]
@@ -57,43 +59,45 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getDocuments("users").subscribe(data => {
-      this.users = data;
-    });
-
-    this.dataService.getDocuments("logs").subscribe(data => {
-      this.logIngresos = data.map(item => ({
-        name: `${item.usuario} - ${this.datePipe.transform(item.fechaDeIngreso)}`,
-        value: 1 // Puedes ajustar esto según tus necesidades (por ejemplo, contar eventos)
-      }));
-    });
-
-    this.dataService.getDocuments("turnos").subscribe(data => {
-      const turnosPorEspecialidad = this.groupAndSumByEspecialidad(data);
-      this.turnosPorEspecialidad = turnosPorEspecialidad.map(item => ({
-        name: item.especialidad,
-        value: item.totalTurnos
-      }));
-
-      const turnosPorDia = this.groupAndSumByDia(data);
-      this.turnosPorDia = turnosPorDia.map(item => ({
-        name: item.dia,
-        value: item.totalTurnos
-      }));
-      
-      const turnosPorMedico = this.groupAndCountByMedico(data);
-      this.turnosPorMedico = turnosPorMedico.map(item => ({
-        name: item.medico,
-        value: item.totalTurnos
-      }));
-
-      const turnosFinalizadosPorMedico = this.groupAndCountByMedico(data.filter(item => item.estado === "Realizado"));
-      this.turnosFinalizadosPorMedico = turnosFinalizadosPorMedico.map(item => ({
-        name: item.medico,
-        value: item.totalTurnos
-      }));
-
-    });
+    if (this.user.userType === "admin") {
+      this.dataService.getDocuments("users").subscribe(data => {
+        this.users = data;
+      });
+  
+      this.dataService.getDocuments("logs").subscribe(data => {
+        this.logIngresos = data.map(item => ({
+          name: `${item.usuario} - ${this.datePipe.transform(item.fechaDeIngreso)}`,
+          value: 1 // Puedes ajustar esto según tus necesidades (por ejemplo, contar eventos)
+        }));
+      });
+  
+      this.dataService.getDocuments("turnos").subscribe(data => {
+        const turnosPorEspecialidad = this.groupAndSumByEspecialidad(data);
+        this.turnosPorEspecialidad = turnosPorEspecialidad.map(item => ({
+          name: item.especialidad,
+          value: item.totalTurnos
+        }));
+  
+        const turnosPorDia = this.groupAndSumByDia(data);
+        this.turnosPorDia = turnosPorDia.map(item => ({
+          name: item.dia,
+          value: item.totalTurnos
+        }));
+        
+        const turnosPorMedico = this.groupAndCountByMedico(data);
+        this.turnosPorMedico = turnosPorMedico.map(item => ({
+          name: item.medico,
+          value: item.totalTurnos
+        }));
+  
+        const turnosFinalizadosPorMedico = this.groupAndCountByMedico(data.filter(item => item.estado === "Realizado"));
+        this.turnosFinalizadosPorMedico = turnosFinalizadosPorMedico.map(item => ({
+          name: item.medico,
+          value: item.totalTurnos
+        }));
+  
+      });
+    }
   }
 
   groupAndCountByMedico(data: any[]): any[] {

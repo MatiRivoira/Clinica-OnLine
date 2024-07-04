@@ -27,6 +27,8 @@ img, .btn-notificaciones {
     cursor: pointer;
 }
 
+
+
 .right {
     display: flex;
     justify-content: flex-end;
@@ -43,6 +45,32 @@ img, .btn-notificaciones {
     }
 }
 
+.btn-notificaciones svg {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .btn-notificaciones.animate svg {
+    animation: giro 2s linear infinite;
+  }
+  
+  @keyframes giro {
+    0% {
+      transform: rotateZ(0deg);
+    }
+    25% {
+      transform: rotateZ(-10deg); /* Girar a la izquierda */
+    }
+    50% {
+      transform: rotateZ(0deg); /* Volver a la posición inicial */
+    }
+    75% {
+      transform: rotateZ(10deg); /* Girar a la derecha */
+    }
+    100% {
+      transform: rotateZ(0deg); /* Volver a la posición inicial */
+    }
+  }
+
 .col-lg-3 {
     width: 185px;
     display: flex;
@@ -50,6 +78,7 @@ img, .btn-notificaciones {
     align-content: flex-start;
     justify-content: center;
     align-items: flex-start;
+    cursor: pointer;
 
     p {
         font-size: 20px;
@@ -58,6 +87,7 @@ img, .btn-notificaciones {
 }
 
 .dataContainer {
+    cursor: pointer;
     width: 250px;
     height: 250px;
     background-size: cover; /* La imagen cubrirá todo el div */

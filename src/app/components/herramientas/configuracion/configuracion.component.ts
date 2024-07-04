@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { ConfirmLogoutDirective } from '../../../directives/confirm-logout.directive';
 
 @Component({
   selector: 'app-configuracion',
   standalone: true,
-  imports: [],
+  imports: [ConfirmLogoutDirective],
   templateUrl: './configuracion.component.html',
   styleUrl: './configuracion.component.scss'
 })
 export class ConfiguracionComponent {
-  authService = inject(AuthService);
 }

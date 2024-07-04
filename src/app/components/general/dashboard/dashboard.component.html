@@ -6,49 +6,90 @@
             <h1>{{user.nombre}} {{user.apellido}}</h1>
         </div>
         <div class="col-lg-6 right">
-            <div class="btn-notificaciones" (click)="handleClick($event, 'notificaciones')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24">
-                    <path d="M12 22a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22zm7-7.414V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v4.586l-1.707 1.707A.996.996 0 0 0 3 17v1a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-1a.996.996 0 0 0-.293-.707L19 14.586z"></path>
+            <div class="btn-notificaciones" appMoveSVG  (click)="handleClick($event, 'notificaciones')">
+                <svg  xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24">
+                  <path d="M12 22a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22zm7-7.414V10c0-3.217-2.185-5.927-5.145-6.742C13.562 2.52 12.846 2 12 2s-1.562.52-1.855 1.258C7.185 4.074 5 6.783 5 10v4.586l-1.707 1.707A.996.996 0 0 0 3 17v1a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-1a.996.996 0 0 0-.293-.707L19 14.586z"></path>
                 </svg>
-            </div>
+              </div>
             <img [src]="user.img" alt="Perfil" (click)="handleClick($event, 'perfil')">
         </div>
     </div>
     @if (user.userType == 'paciente') {
-        <div class="container-fluid" style="padding-left: 0;">
-            <div class="row" style="padding-right: 20px;">
-                <div class="col-lg-3">
-                    <h2>{{user.edad}}</h2>
-                    <p>Años</p>
+        @if (user.ultimoTurno) {
+            @if (user.ultimoTurno.historialClinico) {
+                <div class="container-fluid" style="padding-left: 0;">
+                    <div class="row" style="padding-right: 20px;">
+                        <div class="col-lg-3" appCopyToClipboard>
+                            <h2>{{user.edad}}</h2>
+                            <p>Años</p>
+                        </div>
+                        <div class="col-lg-3" appCopyToClipboard>
+                            <h2>{{ultimoTurno.historialClinico.altura}}</h2>
+                            <p>Altura, cm</p>
+                        </div>
+                        <div class="col-lg-3" appCopyToClipboard>
+                            <h2>{{ultimoTurno.historialClinico.peso}}</h2>
+                            <p>Peso, kg</p>
+                        </div>
+                        <div class="col-lg-3" appCopyToClipboard>
+                            <h2>A+</h2>
+                            <p>Tipo de sangre</p>
+                        </div>
+                    </div>
+                    <div class="row" style="gap: 30px; margin-top: 25px;">
+                        <div class="col-lg-4 dataContainer" style="background-image: url('img/temperatura.png');" appCopyToClipboard>
+                            <p>Temperatura</p>
+                            <h1>{{ultimoTurno.historialClinico.temperatura}}°</h1>
+                        </div>
+                        <div class="col-lg-4 dataContainer sinIMG" appCopyToClipboard>
+                            <p>Ultimo turno</p>
+                            <p style="margin-top: 115px;">{{ultimoTurno.fecha}}</p>
+                        </div>
+                        <div class="col-lg-4 dataContainer" style="background-image: url('img/presion.png');" appCopyToClipboard>
+                            <p>Presión</p>
+                            <h1>{{ultimoTurno.historialClinico.presion}}</h1>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-3">
-                    <h2>{{ultimoTurno.historialClinico.altura}}</h2>
-                    <p>Altura, cm</p>
+            } 
+        } 
+
+        @if (!user.ultimoTurno || !user.ultimoTurno.historialClinico) {
+            <div class="container-fluid" style="padding-left: 0;">
+                <div class="row" style="padding-right: 20px;">
+                    <div class="col-lg-3" appCopyToClipboard>
+                        <h2>{{user.edad}}</h2>
+                        <p>Años</p>
+                    </div>
+                    <div class="col-lg-3" appCopyToClipboard>
+                        <h2>?</h2>
+                        <p>Altura, cm</p>
+                    </div>
+                    <div class="col-lg-3" appCopyToClipboard>
+                        <h2>?</h2>
+                        <p>Peso, kg</p>
+                    </div>
+                    <div class="col-lg-3" appCopyToClipboard>
+                        <h2>A+</h2>
+                        <p>Tipo de sangre</p>
+                    </div>
                 </div>
-                <div class="col-lg-3">
-                    <h2>{{ultimoTurno.historialClinico.peso}}</h2>
-                    <p>Peso, kg</p>
-                </div>
-                <div class="col-lg-3">
-                    <h2>A+</h2>
-                    <p>Tipo de sangre</p>
+                <div class="row" style="gap: 30px; margin-top: 25px;">
+                    <div class="col-lg-4 dataContainer" style="background-image: url('img/temperatura.png');" appCopyToClipboard>
+                        <p>Temperatura</p>
+                        <h1>?°</h1>
+                    </div>
+                    <div class="col-lg-4 dataContainer sinIMG" appCopyToClipboard>
+                        <p>Ultimo turno</p>
+                        <p style="margin-top: 115px;">?</p>
+                    </div>
+                    <div class="col-lg-4 dataContainer" style="background-image: url('img/presion.png');" appCopyToClipboard>
+                        <p>Presión</p>
+                        <h1>?</h1>
+                    </div>
                 </div>
             </div>
-            <div class="row" style="gap: 30px; margin-top: 25px;">
-                <div class="col-lg-4 dataContainer" style="background-image: url('img/temperatura.png');">
-                    <p>Temperatura</p>
-                    <h1>{{ultimoTurno.historialClinico.temperatura}}°</h1>
-                </div>
-                <div class="col-lg-4 dataContainer sinIMG">
-                    <p>Ultimo turno</p>
-                    <p style="margin-top: 115px;">{{ultimoTurno.fecha}}</p>
-                </div>
-                <div class="col-lg-4 dataContainer" style="background-image: url('img/presion.png');" >
-                    <p>Presión</p>
-                    <h1>{{ultimoTurno.historialClinico.presion}}</h1>
-                </div>
-            </div>
-        </div>
+        }
     }
 
     @if (user.userType == "admin") {
