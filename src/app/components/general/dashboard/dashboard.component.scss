@@ -90,3 +90,13 @@ img, .btn-notificaciones {
         color: #272e41;
     }
 }
+
+.grafic-container {
+    position: relative;
+    height: 300px;
+
+    h2 {
+        width: 100%;
+        position: absolute;
+    }
+}

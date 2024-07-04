@@ -7,6 +7,7 @@ import { AngularFireModule } from "@angular/fire/compat";
 import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
 
 import { routes } from './app.routes';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 const firebaseConfig = {
   apiKey: "AIzaSyB48Efk0VQquHIIO7UB6ai2fWWu_TO3Qfw",
@@ -24,6 +25,6 @@ export const appConfig: ApplicationConfig = {
       AngularFireModule.initializeApp(firebaseConfig),
       HttpClientModule,
       AngularFirestoreModule
-    )
+    ), provideCharts(withDefaultRegisterables()), provideCharts(withDefaultRegisterables())
   ]
 };

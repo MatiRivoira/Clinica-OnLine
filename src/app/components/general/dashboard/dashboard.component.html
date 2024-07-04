@@ -1,3 +1,4 @@
+<script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>
 <div class="container-fluid" (click)="handleClick($event)">
     <div class="row">
         <div class="col-lg-6">
@@ -47,6 +48,61 @@
                     <h1>{{ultimoTurno.historialClinico.presion}}</h1>
                 </div>
             </div>
+        </div>
+    }
+
+    @if (user.userType == "admin") {
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 grafic-container">
+                    <h2 style="margin-bottom: 25px;">Log de Ingresos al Sistema</h2>
+                    <ngx-charts-advanced-pie-chart
+                        [scheme]="colorScheme"
+                        [results]="logIngresos"
+                        [gradient]="gradient">
+                    </ngx-charts-advanced-pie-chart>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 grafic-container">
+                    <h2>Turnos por especialidad</h2>
+                    <ngx-charts-advanced-pie-chart
+                        [scheme]="colorScheme"
+                        [results]="turnosPorEspecialidad"
+                        [gradient]="gradient">
+                    </ngx-charts-advanced-pie-chart>
+                </div>
+                <div class="col-lg-6 grafic-container">
+                    <h2>Turnos por dia</h2>
+                    <ngx-charts-advanced-pie-chart
+                        [scheme]="colorScheme"
+                        [results]="turnosPorDia"
+                        [gradient]="gradient">
+                    </ngx-charts-advanced-pie-chart>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 grafic-container">
+                    <h2>Turnos solicitados por medico</h2>
+                    <ngx-charts-advanced-pie-chart
+                        [scheme]="colorScheme"
+                        [results]="turnosPorMedico"
+                        [gradient]="gradient">
+                    </ngx-charts-advanced-pie-chart>
+                </div>
+                <div class="col-lg-6 grafic-container">
+                    <h2>Turnos finalizados por medico</h2>
+                    <ngx-charts-advanced-pie-chart
+                        [scheme]="colorScheme"
+                        [results]="turnosFinalizadosPorMedico"
+                        [gradient]="gradient">
+                    </ngx-charts-advanced-pie-chart>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid" style="margin-top: -60px;">
+              <button class="btn-accion rojo" (click)="exportToPDF()">Exportar a PDF</button>
+              <button class="btn-accion verde" (click)="exportToExcel()">Exportar a Excel</button>
         </div>
     }
 </div>
