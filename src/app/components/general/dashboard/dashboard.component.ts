@@ -15,17 +15,17 @@ import { CopyToClipboardDirective } from '../../../directives/copy-to-clipboard.
   imports: [NgxChartsModule, MoveSVGDirective, CopyToClipboardDirective],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  providers: [DiaHorarioPipePipe , TransformarIDaStringPipe, GraficoToStringPipe]
+  providers: [DiaHorarioPipePipe, TransformarIDaStringPipe, GraficoToStringPipe]
 })
 export class DashboardComponent {
-  @Input() user:any;
-  @Input() ultimoTurno:any;
+  @Input() user: any;
+  @Input() ultimoTurno: any;
   @Output() click = new EventEmitter<any>();
 
-  users:any;
+  users: any;
   barChar: any;
   logIngresos!: any;
-  turnosPorEspecialidad!:any;
+  turnosPorEspecialidad!: any;
   turnosPorDia!: any;
   turnosPorMedico!: any;
   turnosFinalizadosPorMedico!: any;
@@ -35,7 +35,7 @@ export class DashboardComponent {
   showLegend: boolean = true;
   showLabels: boolean = true;
   isDoughnut: boolean = false;
- 
+
   colorScheme: any = {
     domain: [
       '#22e1bf', // Color principal (más claro)
@@ -44,12 +44,12 @@ export class DashboardComponent {
     ]
   };
 
-  constructor(private dataService: FirestoreService, 
-              private pdfService:PdfDownloadService, 
-              private xlsService:ExcelDownloadGenericService, 
-              private datePipe: DiaHorarioPipePipe, 
-              private obteberUsr : TransformarIDaStringPipe, 
-              private graficoToString:GraficoToStringPipe) {}
+  constructor(private dataService: FirestoreService,
+    private pdfService: PdfDownloadService,
+    private xlsService: ExcelDownloadGenericService,
+    private datePipe: DiaHorarioPipePipe,
+    private obteberUsr: TransformarIDaStringPipe,
+    private graficoToString: GraficoToStringPipe) { }
 
   handleClick(event: Event, action?: string) {
     event.stopPropagation();
@@ -64,39 +64,39 @@ export class DashboardComponent {
       this.dataService.getDocuments("users").subscribe(data => {
         this.users = data;
       });
-  
+
       this.dataService.getDocuments("logs").subscribe(data => {
         this.logIngresos = data.map(item => ({
           name: `${item.usuario} - ${this.datePipe.transform(item.fechaDeIngreso)}`,
           value: 1 // Puedes ajustar esto según tus necesidades (por ejemplo, contar eventos)
         }));
       });
-  
+
       this.dataService.getDocuments("turnos").subscribe(data => {
         const turnosPorEspecialidad = this.groupAndSumByEspecialidad(data);
         this.turnosPorEspecialidad = turnosPorEspecialidad.map(item => ({
           name: item.especialidad,
           value: item.totalTurnos
         }));
-  
+
         const turnosPorDia = this.groupAndSumByDia(data);
         this.turnosPorDia = turnosPorDia.map(item => ({
           name: item.dia,
           value: item.totalTurnos
         }));
-        
+
         const turnosPorMedico = this.groupAndCountByMedico(data);
         this.turnosPorMedico = turnosPorMedico.map(item => ({
           name: item.medico,
           value: item.totalTurnos
         }));
-  
+
         const turnosFinalizadosPorMedico = this.groupAndCountByMedico(data.filter(item => item.estado === "Realizado"));
         this.turnosFinalizadosPorMedico = turnosFinalizadosPorMedico.map(item => ({
           name: item.medico,
           value: item.totalTurnos
         }));
-  
+
       });
     }
   }
@@ -154,33 +154,33 @@ export class DashboardComponent {
     const partes = fechaStr.split(', ')[1]; // Obtener la parte "28 de junio de 2024"
     return partes; // Retornar solo la parte de la fecha sin el día de la semana
   }
-  
+
 
   exportToPDF(): void {
-    let pdfTxt:string = "";
+    let pdfTxt: string = "";
 
     pdfTxt += `Log de Ingresos al Sistema \n---------------------------------------------- \n`;
-    this.logIngresos.forEach((log:any) => {
+    this.logIngresos.forEach((log: any) => {
       pdfTxt += `${log.name}\n`;
     });
 
     pdfTxt += `\n\nTurnos por especialidad \n---------------------------------------------- \n`;
-    this.turnosPorEspecialidad.forEach((turno:any) => {
+    this.turnosPorEspecialidad.forEach((turno: any) => {
       pdfTxt += this.graficoToString.transform(turno);
     });
 
     pdfTxt += `\n\nTurnos por dia \n---------------------------------------------- \n`;
-    this.turnosPorDia.forEach((turno:any) => {
+    this.turnosPorDia.forEach((turno: any) => {
       pdfTxt += this.graficoToString.transform(turno);
     });
 
     pdfTxt += `\n\nTurnos por solicitados por medico \n---------------------------------------------- \n`;
-    this.turnosPorMedico.forEach((turno:any) => {
+    this.turnosPorMedico.forEach((turno: any) => {
       pdfTxt += this.graficoToString.transform(turno);
     });
 
     pdfTxt += `\n\nTurnos por realizados por medico \n---------------------------------------------- \n`;
-    this.turnosFinalizadosPorMedico.forEach((turno:any) => {
+    this.turnosFinalizadosPorMedico.forEach((turno: any) => {
       pdfTxt += this.graficoToString.transform(turno);
     });
 
@@ -193,5 +193,5 @@ export class DashboardComponent {
 
     this.xlsService.descargarExcelMuchasHojas(datos, nombresHojas, ['name', 'especialidad', 'dia'], `Informes`);
   }
-  
+
 }
